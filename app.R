@@ -19,7 +19,7 @@ fa_icon <- function(name) {
 }
 # UI
 ui <- page_navbar(
-  title = "Aplikasi Multi-Page",fillable = F,
+  title = "BKKBN SULBAR",fillable = F,
   theme = bs_theme(version = 5),
   
   # Page 1 - Dashboard
