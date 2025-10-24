@@ -1,7 +1,6 @@
 library(shiny)
 library(bslib)
 library(collapse)
-library(rlang)
 library(bsicons)
 library(data.table)
 library(echarts4r)
@@ -1131,6 +1130,7 @@ server <- function(input, output, session) {
       e_y_axis(
         min = round(y_min),
         max = round(y_max),
+        splitNumber = 5, # Batasi 5 tick seperti Python
         axisLabel = list(
           formatter = htmlwidgets::JS(
             "function(value) { return value.toLocaleString('id-ID'); }"
