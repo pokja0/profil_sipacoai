@@ -24,17 +24,6 @@ ui <- page_navbar(
   
   # Page 1 - Dashboard
   nav_panel(
-    # Inisialisasi waiter untuk preloader startup - dipindahkan ke dalam nav_panel
-    waiter::use_waiter(),
-    waiter_preloader(
-      html = tagList(spin_timer(),
-        br(),
-        br(),
-        sample(
-          c("Mohon ditunggu", "Sedang Menyiapkan", "Menyiapkan Data"), 1
-        )
-      )
-    ),
     title = "Dashboard",
     icon = icon("dashboard"),
     fluidRow(
