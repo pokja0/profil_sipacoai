@@ -5,6 +5,7 @@ library(bsicons)
 library(data.table)
 library(echarts4r)
 library(gt)
+library(waiter)
 
 daftar_bulan = c("JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER")
 data_nama_desa = fread("data/profil_poktan.csv", header = T)
@@ -23,6 +24,17 @@ ui <- page_navbar(
   
   # Page 1 - Dashboard
   nav_panel(
+    # Inisialisasi waiter untuk preloader startup - dipindahkan ke dalam nav_panel
+    waiter::use_waiter(),
+    waiter_preloader(
+      html = tagList(spin_timer(),
+        br(),
+        br(),
+        sample(
+          c("Mohon ditunggu", "Sedang Menyiapkan", "Menyiapkan Data"), 1
+        )
+      )
+    ),
     title = "Dashboard",
     icon = icon("dashboard"),
     fluidRow(
@@ -446,7 +458,7 @@ ui <- page_navbar(
         style = "margin-top: 15px; margin-bottom: 15px;"
       )
     )
-  )   
+  )
 )
 
 # Server
