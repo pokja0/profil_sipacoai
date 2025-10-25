@@ -1,0 +1,12 @@
+name: sipacoai
+title: sipacoai
+username: pokja0
+account: pokja0
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15868387
+bundleId: 11083925
+url: https://pokja0.shinyapps.io/sipacoai/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
