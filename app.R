@@ -6,9 +6,10 @@ library(data.table)
 library(echarts4r)
 library(gt)
 library(waiter)
+library(fst)
 
 daftar_bulan = c("JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER")
-data_nama_desa = fread("data/profil_poktan.csv", header = T)
+data_nama_desa = fst::read_fst("data/profil_poktan.fst")
 
 warna_kuning = "#d4a017"
 
@@ -29,11 +30,10 @@ ui <- page_navbar(
     fluidRow(
       column(3, 
              selectInput("pilih_kab", "Daftar Kabupaten",
-                         choices = c("SEMUA KABUPATEN", "PASANGKAYU", "MAMUJU TENGAH",
-                                     "MAMUJU", "MAJENE", "POLEWALI MANDAR", "MAMASA"))
+                         choices = c("SEMUA KABUPATEN"))
       ),
-      column(3, selectInput("pilih_kec", "Daftar Kecamatan", choices = NULL)),
-      column(3, selectInput("pilih_desa_kel", "Pilih Desa/Kel", choices = NULL)),
+      column(3, selectInput("pilih_kec", "Daftar Kecamatan", choices = c("SEMUA KECAMATAN"))),
+      column(3, selectInput("pilih_desa_kel", "Pilih Desa/Kel", choices = c("SEMUA DESA/KEL"))),
       column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:9], selected = "SEPTEMBER"))
     ),
     br(
@@ -453,37 +453,95 @@ ui <- page_navbar(
 # Server
 server <- function(input, output, session) {
   # gu input
+  
+  processed_data <- reactive({
+    # Pre-process data untuk optimasi
+    list(
+      kabupaten_choices = sort(unique(data_nama_desa$KABUPATEN)),
+      data_by_kabupaten = split(data_nama_desa, data_nama_desa$KABUPATEN)
+    )
+  })
+  
+  # Initialize kabupaten choices saat app dimulai
+  observe({
+    choices <- processed_data()$kabupaten_choices
+    updateSelectInput(
+      session, 
+      "pilih_kab",
+      choices = c("SEMUA KABUPATEN", setNames(choices, choices))
+    )
+  })
+  
+  # Update kecamatan choices berdasarkan kabupaten yang dipilih
   observeEvent(input$pilih_kab, {
-    if (input$pilih_kab == "SEMUA KABUPATEN") {
-      updateSelectInput(session, "pilih_kec",
-                        choices = c("SEMUA KECAMATAN"))
+    if (input$pilih_kab != "SEMUA KABUPATEN") {
+      # Filter data berdasarkan kabupaten
+      filtered_data <- processed_data()$data_by_kabupaten[[input$pilih_kab]]
+      kecamatan_choices <- sort(unique(filtered_data$KECAMATAN))
+      
+      updateSelectInput(
+        session,
+        "pilih_kec",
+        choices = c("SEMUA KECAMATAN", setNames(kecamatan_choices, kecamatan_choices))
+      )
     } else {
-      daftar_kecamatan = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN) |>
-        fsubset(KABUPATEN == input$pilih_kab) |>
-        fselect(KECAMATAN)
-      daftar_kecamatan = daftar_kecamatan$KECAMATAN
-      updateSelectInput(session, "pilih_kec",
-                        choices = c("SEMUA KECAMATAN",
-                                    daftar_kecamatan))
+      # Reset kecamatan dan desa jika kabupaten tidak dipilih
+      updateSelectInput(session, "pilih_kec", choices = c("SEMUA KECAMATAN"))
+      updateSelectInput(session, "pilih_desa_kel", choices = c("SEMUA DESA/KEL"))
     }
   })
   
+  # Update desa choices berdasarkan kecamatan yang dipilih
   observeEvent(input$pilih_kec, {
-    if (input$pilih_kec == "SEMUA KECAMATAN") {
-      updateSelectInput(session, "pilih_desa_kel",
-                        choices = c("SEMUA DESA/KEL"))
+    if (input$pilih_kec != "SEMUA KECAMATAN" && input$pilih_kab != "SEMUA KABUPATEN") {
+      # Filter data berdasarkan kabupaten dan kecamatan
+      filtered_data <- data_nama_desa |>
+        fsubset(KABUPATEN == input$pilih_kab & KECAMATAN == input$pilih_kec)
+      
+      desa_choices <- sort(unique(filtered_data$KELURAHAN))
+      
+      updateSelectInput(
+        session,
+        "pilih_desa_kel",
+        choices = c("SEMUA DESA/KEL", setNames(desa_choices, desa_choices))
+      )
     } else {
-      daftar_kel = data_nama_desa |>
-        fselect(KECAMATAN, KELURAHAN) |>
-        fsubset(KECAMATAN == input$pilih_kec) |>
-        fselect(KELURAHAN)
-      daftar_kel = daftar_kel$KELURAHAN
-      updateSelectInput(session, "pilih_desa_kel",
-                        choices = c("SEMUA DESA/KEL", 
-                                    daftar_kel))
+      # Reset desa jika kecamatan tidak dipilih
+      updateSelectInput(session, "pilih_desa_kel", choices = c("SEMUA DESA/KEL"))
     }
   })
+  
+  # observeEvent(input$pilih_kab, {
+  #   if (input$pilih_kab == "SEMUA KABUPATEN") {
+  #     updateSelectInput(session, "pilih_kec",
+  #                       choices = c("SEMUA KECAMATAN"))
+  #   } else {
+  #     daftar_kecamatan = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN) |>
+  #       fsubset(KABUPATEN == input$pilih_kab) |>
+  #       fselect(KECAMATAN)
+  #     daftar_kecamatan = daftar_kecamatan$KECAMATAN
+  #     updateSelectInput(session, "pilih_kec",
+  #                       choices = c("SEMUA KECAMATAN",
+  #                                   daftar_kecamatan))
+  #   }
+  # })
+  # 
+  # observeEvent(input$pilih_kec, {
+  #   if (input$pilih_kec == "SEMUA KECAMATAN") {
+  #     updateSelectInput(session, "pilih_desa_kel",
+  #                       choices = c("SEMUA DESA/KEL"))
+  #   } else {
+  #     daftar_kel = data_nama_desa |>
+  #       fselect(KECAMATAN, KELURAHAN) |>
+  #       fsubset(KECAMATAN == input$pilih_kec) |>
+  #       fselect(KELURAHAN)
+  #     daftar_kel = daftar_kel$KELURAHAN
+  #     updateSelectInput(session, "pilih_desa_kel",
+  #                       choices = c("SEMUA DESA/KEL", 
+  #                                   daftar_kel))
+  #   }
+  # })
   
   ## batas gu input
   
@@ -1894,37 +1952,87 @@ server <- function(input, output, session) {
   
   # SIPACOAI
   # gu input
+  
+  # Initialize kabupaten choices saat app dimulai
+  observe({
+    choices <- processed_data()$kabupaten_choices
+    updateSelectInput(
+      session, 
+      "pilih_kab",
+      choices = c("SEMUA KABUPATEN", setNames(choices, choices))
+    )
+  })
+  
+  # Update kecamatan choices berdasarkan kabupaten yang dipilih
   observeEvent(input$pilih_kab_sipacoai, {
-    if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
-      updateSelectInput(session, "pilih_kec_sipacoai",
-                        choices = c("SEMUA KECAMATAN"))
+    if (input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
+      # Filter data berdasarkan kabupaten
+      filtered_data <- processed_data()$data_by_kabupaten[[input$pilih_kab_sipacoai]]
+      kecamatan_choices <- sort(unique(filtered_data$KECAMATAN))
+      
+      updateSelectInput(
+        session,
+        "pilih_kec_sipacoai",
+        choices = c("SEMUA KECAMATAN", setNames(kecamatan_choices, kecamatan_choices))
+      )
     } else {
-      daftar_kecamatan = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN) |>
-        fsubset(KABUPATEN == input$pilih_kab_sipacoai) |>
-        fselect(KECAMATAN)
-      daftar_kecamatan = daftar_kecamatan$KECAMATAN
-      updateSelectInput(session, "pilih_kec_sipacoai",
-                        choices = c("SEMUA KECAMATAN",
-                                    daftar_kecamatan))
+      # Reset kecamatan dan desa jika kabupaten tidak dipilih
+      updateSelectInput(session, "pilih_kec_sipacoai", choices = c("SEMUA KECAMATAN"))
+      updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
     }
   })
   
+  # Update desa choices berdasarkan kecamatan yang dipilih
   observeEvent(input$pilih_kec_sipacoai, {
-    if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
-      updateSelectInput(session, "pilih_desa_kel_sipacoai",
-                        choices = c("SEMUA DESA/KEL"))
+    if (input$pilih_kec_sipacoai != "SEMUA KECAMATAN" && input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
+      # Filter data berdasarkan kabupaten dan kecamatan
+      filtered_data <- data_nama_desa |>
+        fsubset(KABUPATEN == input$pilih_kab_sipacoai & KECAMATAN == input$pilih_kec_sipacoai)
+      
+      desa_choices <- sort(unique(filtered_data$KELURAHAN))
+      
+      updateSelectInput(
+        session,
+        "pilih_desa_kel_sipacoai",
+        choices = c("SEMUA DESA/KEL", setNames(desa_choices, desa_choices))
+      )
     } else {
-      daftar_kel = data_nama_desa |>
-        fselect(KECAMATAN, KELURAHAN) |>
-        fsubset(KECAMATAN == input$pilih_kec_sipacoai) |>
-        fselect(KELURAHAN)
-      daftar_kel = daftar_kel$KELURAHAN
-      updateSelectInput(session, "pilih_desa_kel_sipacoai",
-                        choices = c("SEMUA DESA/KEL", 
-                                    daftar_kel))
+      # Reset desa jika kecamatan tidak dipilih
+      updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
     }
   })
+  
+  # observeEvent(input$pilih_kab_sipacoai, {
+  #   if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
+  #     updateSelectInput(session, "pilih_kec_sipacoai",
+  #                       choices = c("SEMUA KECAMATAN"))
+  #   } else {
+  #     daftar_kecamatan = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN) |>
+  #       fsubset(KABUPATEN == input$pilih_kab_sipacoai) |>
+  #       fselect(KECAMATAN)
+  #     daftar_kecamatan = daftar_kecamatan$KECAMATAN
+  #     updateSelectInput(session, "pilih_kec_sipacoai",
+  #                       choices = c("SEMUA KECAMATAN",
+  #                                   daftar_kecamatan))
+  #   }
+  # })
+  # 
+  # observeEvent(input$pilih_kec_sipacoai, {
+  #   if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
+  #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
+  #                       choices = c("SEMUA DESA/KEL"))
+  #   } else {
+  #     daftar_kel = data_nama_desa |>
+  #       fselect(KECAMATAN, KELURAHAN) |>
+  #       fsubset(KECAMATAN == input$pilih_kec_sipacoai) |>
+  #       fselect(KELURAHAN)
+  #     daftar_kel = daftar_kel$KELURAHAN
+  #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
+  #                       choices = c("SEMUA DESA/KEL", 
+  #                                   daftar_kel))
+  #   }
+  # })
   
   ## batas gu input
   
