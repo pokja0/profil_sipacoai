@@ -851,6 +851,69 @@
         "Archs": "x64"
       }
     },
+    "fst": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "fst",
+        "Type": "Package",
+        "Title": "Lightning Fast Serialization of Data Frames",
+        "Description": "Multithreaded serialization of compressed data frames using the 'fst' format. The\n    'fst' format allows for full random access of stored data and a wide range of compression\n    settings using the LZ4 and ZSTD compressors.",
+        "Version": "0.9.8",
+        "Date": "2022-02-07",
+        "Authors@R": "\n    person(\"Mark\", \"Klik\", email = \"markklik@gmail.com\", role = c(\"aut\", \"cre\", \"cph\"))",
+        "Depends": "R (>= 3.0.0)",
+        "Imports": "fstcore, Rcpp",
+        "LinkingTo": "Rcpp, fstcore",
+        "SystemRequirements": "little-endian platform",
+        "RoxygenNote": "7.1.2",
+        "Suggests": "testthat, bit64, data.table, lintr, nanotime, crayon",
+        "License": "AGPL-3 | file LICENSE",
+        "Encoding": "UTF-8",
+        "URL": "http://www.fstpackage.org",
+        "BugReports": "https://github.com/fstpackage/fst/issues",
+        "NeedsCompilation": "yes",
+        "Packaged": "2022-02-07 16:20:02 UTC; Mark",
+        "Author": "Mark Klik [aut, cre, cph]",
+        "Maintainer": "Mark Klik <markklik@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-02-08 07:40:02 UTC",
+        "Built": "R 4.5.0; x86_64-w64-mingw32; 2025-05-26 01:24:54 UTC; windows",
+        "Archs": "x64"
+      }
+    },
+    "fstcore": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "fstcore",
+        "Type": "Package",
+        "Title": "R Bindings to the 'Fstlib' Library",
+        "Description": "The 'fstlib' library provides multithreaded serialization of compressed data frames using the\n    'fst' format. The 'fst' format allows for random access of stored data and compression with the 'LZ4' and 'ZSTD'\n    compressors.",
+        "Version": "0.10.0",
+        "Date": "2025-02-10",
+        "Authors@R": "\n    c(person(given = \"Mark\",\n             family = \"Klik\",\n             role = c(\"aut\", \"cre\", \"cph\"),\n             email = \"markklik@gmail.com\",\n             comment = \"Mark Klik is author of the fstcore package and author and copyright holder of the bundled 'fstlib' code\"),\n      person(given = \"Yuta\",\n             family = \"Mori\",\n             role = c(\"ctb\", \"cph\"),\n             comment = \"Yuta Mori is author and copyright holder of the bundled 'libdivsufsort-lite' code, part of 'ZSTD'\"),\n      person(given = \"Przemyslaw\",\n             family = \"Skibinski\",\n             role = c(\"ctb\", \"cph\"),\n             comment = \"Przemyslaw Skibinski is author and copyright holder of the bundled price functions, part of 'ZSTD'\"),\n      person(given = \"Tino\",\n             family = \"Reichardt\",\n             role = c(\"ctb\", \"cph\"),\n             comment = \"Tino Reichardt is author and copyright holder of bundled sources from the 'zstdmt' library, part of 'ZSTD'\"),\n      person(given = \"Yann\",\n             family = \"Collet\",\n             role = c(\"ctb\", \"cph\"),\n             comment = \"Yann Collet is author of the bundled 'LZ4' and 'ZSTD' code and copyright holder of 'LZ4'\"),\n      person(given = \"Facebook, Inc.\",\n            role = \"cph\",\n            comment = \"Bundled 'ZSTD' code\"))",
+        "Depends": "R (>= 3.0.0)",
+        "Imports": "Rcpp",
+        "LinkingTo": "Rcpp",
+        "SystemRequirements": "little-endian platform",
+        "RoxygenNote": "7.3.2",
+        "Suggests": "testthat, lintr",
+        "License": "MPL-2.0 | file LICENSE",
+        "Encoding": "UTF-8",
+        "Copyright": "This package includes sources from the LZ4 library owned by\nYann Collet, sources of the ZSTD library owned by Facebook,\nInc., sources of the libdivsufsort-lite library owned by Yuta\nMori and sources of the fstlib library owned by Mark Klik",
+        "URL": "https://www.fstpackage.org/fstcore/",
+        "BugReports": "https://github.com/fstpackage/fst/issues",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-02-10 20:13:08 UTC; Code",
+        "Author": "Mark Klik [aut, cre, cph] (Mark Klik is author of the fstcore package\n    and author and copyright holder of the bundled 'fstlib' code),\n  Yuta Mori [ctb, cph] (Yuta Mori is author and copyright holder of the\n    bundled 'libdivsufsort-lite' code, part of 'ZSTD'),\n  Przemyslaw Skibinski [ctb, cph] (Przemyslaw Skibinski is author and\n    copyright holder of the bundled price functions, part of 'ZSTD'),\n  Tino Reichardt [ctb, cph] (Tino Reichardt is author and copyright\n    holder of bundled sources from the 'zstdmt' library, part of\n    'ZSTD'),\n  Yann Collet [ctb, cph] (Yann Collet is author of the bundled 'LZ4' and\n    'ZSTD' code and copyright holder of 'LZ4'),\n  Facebook, Inc. [cph] (Bundled 'ZSTD' code)",
+        "Maintainer": "Mark Klik <markklik@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2025-02-10 20:50:02 UTC",
+        "Built": "R 4.5.0; x86_64-w64-mingw32; 2025-04-23 00:31:00 UTC; windows",
+        "Archs": "x64"
+      }
+    },
     "generics": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -2240,7 +2303,7 @@
       "checksum": "c642a1db3c4542be7996381ea32091fe"
     },
     "app.R": {
-      "checksum": "f381ceff9db9ebff96cb07b6049d6ebf"
+      "checksum": "43f1f9d9ded2be92335be244e6ceace4"
     },
     "data/2025-elsimil-bumil.csv": {
       "checksum": "baeb344dd709a1ae17aab491ff2255cd"
@@ -2313,6 +2376,9 @@
     },
     "data/profil_poktan.csv": {
       "checksum": "008f22581462f7b84a98b40c0291e9ce"
+    },
+    "data/profil_poktan.fst": {
+      "checksum": "b7d708a9ac8994a808046703d5cfa8a5"
     },
     "data/profil_sumber_daya.csv": {
       "checksum": "85a6ad8a581dbd71a84086960824faaa"
