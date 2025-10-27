@@ -334,10 +334,9 @@ ui <- page_navbar(
     layout_sidebar(
       sidebar = sidebar(
         selectInput("pilih_kab_sipacoai", "Daftar Kabupaten",
-                    choices = c("SEMUA KABUPATEN", "PASANGKAYU", "MAMUJU TENGAH",
-                                "MAMUJU", "MAJENE", "POLEWALI MANDAR", "MAMASA")),
-        selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = NULL),
-        selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = NULL),
+                    choices = c("SEMUA KABUPATEN")),
+        selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN"),
+        selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL"),
         selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:9], selected = "SEPTEMBER"),
         input_task_button(
           label_busy = "Sedang Proses",
