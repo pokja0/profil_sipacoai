@@ -53,7 +53,7 @@ ui <- page_navbar(
       
     ),
     fluidRow(
-      textOutput("tes_input_rekap")
+      h5(textOutput("tes_input_rekap"), style="text-align: center;")
     ),
     br(
       
@@ -344,7 +344,7 @@ ui <- page_navbar(
           label = "Cari"
         )
       ),
-      textOutput("tes_input_rekap_sipacoai"),
+      h5(textOutput("tes_input_rekap_sipacoai"), style="text-align: center;"),
       # Baris pertama value boxes
       layout_column_wrap(
         value_box(
@@ -609,11 +609,11 @@ server <- function(input, output, session) {
   ## batas gu filter
   
   ## gu judul
-  values <- reactiveValues(default = 0)
-  
-  observeEvent(input$cari,{
-    values$default <- input$cari
-  })
+  # values <- reactiveValues(default = 0)
+  # 
+  # observeEvent(input$cari,{
+  #   values$default <- input$cari
+  # })
   
   teks_judul_rekap <- eventReactive(input$cari, {
     if(input$pilih_kab == "SEMUA KABUPATEN"){
@@ -638,12 +638,9 @@ server <- function(input, output, session) {
   })
   
   output$tes_input_rekap <- renderText({
-    if(values$default == 0){
-      teks = "Klik Cari Untuk Menampilkan Halaman"
-    }
-    else{
+
       teks = teks_judul_rekap()
-    }
+    
   })
   
   ## batas gu judul
@@ -1957,7 +1954,7 @@ server <- function(input, output, session) {
     choices <- processed_data()$kabupaten_choices
     updateSelectInput(
       session, 
-      "pilih_kab",
+      "pilih_kab_sipacoai",
       choices = c("SEMUA KABUPATEN", setNames(choices, choices))
     )
   })
@@ -2100,11 +2097,11 @@ server <- function(input, output, session) {
   ## batas gu filter
   
   ## gu judul
-  values_sipacoai <- reactiveValues(default = 0)
-  
-  observeEvent(input$cari_sipacoai,{
-    values_sipacoai$default <- input$cari_sipacoai
-  })
+  # values_sipacoai <- reactiveValues(default = 0)
+  # 
+  # observeEvent(input$cari_sipacoai,{
+  #   values_sipacoai$default <- input$cari_sipacoai
+  # })
   
   teks_judul_rekap_sipacoai <- eventReactive(input$cari_sipacoai, {
     if(input$pilih_kab_sipacoai == "SEMUA KABUPATEN"){
@@ -2129,12 +2126,9 @@ server <- function(input, output, session) {
   })
   
   output$tes_input_rekap_sipacoai <- renderText({
-    if(values_sipacoai$default == 0){
-      teks = "Klik Cari Untuk Menampilkan Halaman"
-    }
-    else{
-      teks = teks_judul_rekap_sipacoai()
-    }
+    
+    teks = teks_judul_rekap_sipacoai()
+    
   })
   
   ## batas gu judul
