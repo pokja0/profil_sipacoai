@@ -2036,64 +2036,94 @@ server <- function(input, output, session) {
   
   ## gu filter
   # filter kab
-  value_filter_kab_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari_sipacoai, {
-    kondisi_input = input$pilih_kab_sipacoai
-    if (kondisi_input == "SEMUA KABUPATEN"){
-      filter_kabupaten = unique(data_nama_desa$KABUPATEN)
-    } else{
-      filter_kabupaten = input$pilih_kab_sipacoai
-    }
-    value_filter_kab_sipacoai(filter_kabupaten) 
-  })
-  
-  #kecamatan
-  value_filter_kec_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari_sipacoai, {
-    kondisi_input = input$pilih_kec_sipacoai
-    filter_kabupaten = value_filter_kab_sipacoai()
-    
-    if (kondisi_input == "SEMUA KECAMATAN"){
-      daftar_kecamatan = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN) |>
-        fsubset(KABUPATEN %in% filter_kabupaten) |>
-        fselect(KECAMATAN)
-      filter_kecamatan = daftar_kecamatan$KECAMATAN
-    } else{
-      filter_kecamatan = input$pilih_kec_sipacoai
-    }
-    value_filter_kec_sipacoai(filter_kecamatan) 
-  })
-  
-  # desa
-  value_filter_desa_kel_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari_sipacoai, {
-    kondisi_input = input$pilih_desa_kel_sipacoai
-    filter_kabupaten = value_filter_kab_sipacoai()
-    filter_kecamatan = value_filter_kec_sipacoai()
-    
-    if (kondisi_input == "SEMUA DESA/KEL"){
-      daftar_kel = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
-        fsubset(
-          KABUPATEN %in% filter_kabupaten) |>
-        fsubset(KECAMATAN %in% filter_kecamatan) |>
-        fselect(KELURAHAN)
-      filter_desa_kel = daftar_kel$KELURAHAN
-    } else{
-      filter_desa_kel = input$pilih_desa_kel_sipacoai
-    }
-    value_filter_desa_kel_sipacoai(filter_desa_kel) 
-  })
+  # value_filter_kab_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari_sipacoai, {
+  #   kondisi_input = input$pilih_kab_sipacoai
+  #   if (kondisi_input == "SEMUA KABUPATEN"){
+  #     filter_kabupaten = unique(data_nama_desa$KABUPATEN)
+  #   } else{
+  #     filter_kabupaten = input$pilih_kab_sipacoai
+  #   }
+  #   value_filter_kab_sipacoai(filter_kabupaten) 
+  # })
+  # 
+  # #kecamatan
+  # value_filter_kec_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari_sipacoai, {
+  #   kondisi_input = input$pilih_kec_sipacoai
+  #   filter_kabupaten = value_filter_kab_sipacoai()
+  #   
+  #   if (kondisi_input == "SEMUA KECAMATAN"){
+  #     daftar_kecamatan = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN) |>
+  #       fsubset(KABUPATEN %in% filter_kabupaten) |>
+  #       fselect(KECAMATAN)
+  #     filter_kecamatan = daftar_kecamatan$KECAMATAN
+  #   } else{
+  #     filter_kecamatan = input$pilih_kec_sipacoai
+  #   }
+  #   value_filter_kec_sipacoai(filter_kecamatan) 
+  # })
+  # 
+  # # desa
+  # value_filter_desa_kel_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari_sipacoai, {
+  #   kondisi_input = input$pilih_desa_kel_sipacoai
+  #   filter_kabupaten = value_filter_kab_sipacoai()
+  #   filter_kecamatan = value_filter_kec_sipacoai()
+  #   
+  #   if (kondisi_input == "SEMUA DESA/KEL"){
+  #     daftar_kel = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
+  #       fsubset(
+  #         KABUPATEN %in% filter_kabupaten) |>
+  #       fsubset(KECAMATAN %in% filter_kecamatan) |>
+  #       fselect(KELURAHAN)
+  #     filter_desa_kel = daftar_kel$KELURAHAN
+  #   } else{
+  #     filter_desa_kel = input$pilih_desa_kel_sipacoai
+  #   }
+  #   value_filter_desa_kel_sipacoai(filter_desa_kel) 
+  # })
   
   # bulan
   value_filter_bulan_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
   
   observeEvent(input$cari_sipacoai, {
     value_filter_bulan(input$pilih_bulan_sipacoai) 
+  })
+  
+  # Jika ingin lebih reaktif dan modular
+  value_filter_kab_sipacoai <- reactive({
+    if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
+      unique(data_nama_desa$KABUPATEN)
+    } else {
+      input$pilih_kab_sipacoai
+    }
+  })
+  
+  value_filter_kec_sipacoai <- reactive({
+    req(value_filter_kab_sipacoai())
+    if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
+      unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai()])
+    } else {
+      input$pilih_kec_sipacoai
+    }
+  })
+  
+  value_filter_desa_kel_sipacoai <- reactive({
+    req(value_filter_kab_sipacoai(), value_filter_kec_sipacoai())
+    if (input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
+      unique(data_nama_desa$KELURAHAN[
+        data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai() & 
+          data_nama_desa$KECAMATAN %in% value_filter_kec_sipacoai()
+      ])
+    } else {
+      input$pilih_desa_kel_sipacoai
+    }
   })
   
   ## batas gu filter
@@ -2238,7 +2268,7 @@ server <- function(input, output, session) {
   # Reactive function untuk jumlah penggunaan KKA
   output$jumlah_penggunaan_kka <- renderText({
     # Trigger reactive event berdasarkan action button
-    input$cari_sipacoai
+    req(input$cari_sipacoai)
     
     filter_kabupaten <- value_filter_kab_sipacoai()
     filter_kecamatan <- value_filter_kec_sipacoai() 
@@ -2267,7 +2297,7 @@ server <- function(input, output, session) {
   # Reactive function untuk jumlah edukasi KBPP
   output$jumlah_edukasi_kbpp <- renderText({
     # Trigger reactive event berdasarkan action button
-    input$cari_sipacoai
+    req(input$cari_sipacoai)
     
     filter_kabupaten <- value_filter_kab_sipacoai()
     filter_kecamatan <- value_filter_kec_sipacoai() 
@@ -2348,7 +2378,7 @@ server <- function(input, output, session) {
   # Reactive function untuk jumlah MKJP
   output$jumlah_mkjp_sipacoai <- renderText({
     # Trigger reactive event berdasarkan action button
-    input$caro_sipacoai
+    req(input$cari_sipacoai)
     
       filter_kabupaten <- value_filter_kab_sipacoai()
       filter_kecamatan <- value_filter_kec_sipacoai() 
