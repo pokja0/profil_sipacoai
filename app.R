@@ -2097,7 +2097,7 @@ server <- function(input, output, session) {
   })
   
   # Jika ingin lebih reaktif dan modular
-  value_filter_kab_sipacoai <- reactive({
+  value_filter_kab_sipacoai <- eventReactive(input$cari_sipacoai, {
     if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
       unique(data_nama_desa$KABUPATEN)
     } else {
@@ -2105,7 +2105,7 @@ server <- function(input, output, session) {
     }
   })
   
-  value_filter_kec_sipacoai <- reactive({
+  value_filter_kec_sipacoai <- eventReactive(input$cari_sipacoai, {
     req(value_filter_kab_sipacoai())
     if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
       unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai()])
@@ -2114,7 +2114,7 @@ server <- function(input, output, session) {
     }
   })
   
-  value_filter_desa_kel_sipacoai <- reactive({
+  value_filter_desa_kel_sipacoai <- eventReactive(input$cari_sipacoai, {
     req(value_filter_kab_sipacoai(), value_filter_kec_sipacoai())
     if (input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
       unique(data_nama_desa$KELURAHAN[
