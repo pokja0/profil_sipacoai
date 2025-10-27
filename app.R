@@ -22,7 +22,7 @@ fa_icon <- function(name) {
 ui <- page_navbar(
   title = "BKKBN SULBAR",fillable = F,
   theme = bs_theme(version = 5),
-  
+  header = autoWaiter(),
   # Page 1 - Dashboard
   nav_panel(
     title = "Dashboard",
@@ -451,6 +451,8 @@ ui <- page_navbar(
 
 # Server
 server <- function(input, output, session) {
+  # Preloader saat aplikasi dimulai
+
   # gu input
   
   processed_data <- reactive({
