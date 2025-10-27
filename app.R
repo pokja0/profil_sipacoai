@@ -548,64 +548,97 @@ server <- function(input, output, session) {
   
   ## gu filter
   # filter kab
-  value_filter_kab <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # value_filter_kab <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari, {
+  #   kondisi_input = input$pilih_kab
+  #   if (kondisi_input == "SEMUA KABUPATEN"){
+  #     filter_kabupaten = unique(data_nama_desa$KABUPATEN)
+  #   } else{
+  #     filter_kabupaten = input$pilih_kab
+  #   }
+  #   value_filter_kab(filter_kabupaten) 
+  # })
+  # 
+  # #kecamatan
+  # value_filter_kec <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari, {
+  #   kondisi_input = input$pilih_kec
+  #   filter_kabupaten = value_filter_kab()
+  #   
+  #   if (kondisi_input == "SEMUA KECAMATAN"){
+  #     daftar_kecamatan = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN) |>
+  #       fsubset(KABUPATEN %in% filter_kabupaten) |>
+  #       fselect(KECAMATAN)
+  #     filter_kecamatan = daftar_kecamatan$KECAMATAN
+  #   } else{
+  #     filter_kecamatan = input$pilih_kec
+  #   }
+  #   value_filter_kec(filter_kecamatan) 
+  # })
+  # 
+  # # desa
+  # value_filter_desa_kel <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari, {
+  #   kondisi_input = input$pilih_desa_kel
+  #   filter_kabupaten = value_filter_kab()
+  #   filter_kecamatan = value_filter_kec()
+  #   
+  #   if (kondisi_input == "SEMUA DESA/KEL"){
+  #     daftar_kel = data_nama_desa |>
+  #       fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
+  #       fsubset(
+  #         KABUPATEN %in% filter_kabupaten) |>
+  #       fsubset(KECAMATAN %in% filter_kecamatan) |>
+  #       fselect(KELURAHAN)
+  #     filter_desa_kel = daftar_kel$KELURAHAN
+  #   } else{
+  #     filter_desa_kel = input$pilih_desa_kel
+  #   }
+  #   value_filter_desa_kel(filter_desa_kel) 
+  # })
+  # 
+  # # bulan
+  # value_filter_bulan <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari, {
+  #   value_filter_bulan(input$pilih_bulan) 
+  # })
   
-  observeEvent(input$cari, {
-    kondisi_input = input$pilih_kab
-    if (kondisi_input == "SEMUA KABUPATEN"){
-      filter_kabupaten = unique(data_nama_desa$KABUPATEN)
-    } else{
-      filter_kabupaten = input$pilih_kab
+  value_filter_kab <- eventReactive(input$cari, {
+    if (input$pilih_kab == "SEMUA KABUPATEN") {
+      unique(data_nama_desa$KABUPATEN)
+    } else {
+      input$pilih_kab
     }
-    value_filter_kab(filter_kabupaten) 
   })
   
-  #kecamatan
-  value_filter_kec <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari, {
-    kondisi_input = input$pilih_kec
-    filter_kabupaten = value_filter_kab()
-    
-    if (kondisi_input == "SEMUA KECAMATAN"){
-      daftar_kecamatan = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN) |>
-        fsubset(KABUPATEN %in% filter_kabupaten) |>
-        fselect(KECAMATAN)
-      filter_kecamatan = daftar_kecamatan$KECAMATAN
-    } else{
-      filter_kecamatan = input$pilih_kec
+  value_filter_kec <- eventReactive(input$cari, {
+    req(value_filter_kab())
+    if (input$pilih_kec == "SEMUA KECAMATAN") {
+      unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab()])
+    } else {
+      input$pilih_kec
     }
-    value_filter_kec(filter_kecamatan) 
   })
   
-  # desa
-  value_filter_desa_kel <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari, {
-    kondisi_input = input$pilih_desa_kel
-    filter_kabupaten = value_filter_kab()
-    filter_kecamatan = value_filter_kec()
-    
-    if (kondisi_input == "SEMUA DESA/KEL"){
-      daftar_kel = data_nama_desa |>
-        fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
-        fsubset(
-          KABUPATEN %in% filter_kabupaten) |>
-        fsubset(KECAMATAN %in% filter_kecamatan) |>
-        fselect(KELURAHAN)
-      filter_desa_kel = daftar_kel$KELURAHAN
-    } else{
-      filter_desa_kel = input$pilih_desa_kel
+  value_filter_desa_kel <- eventReactive(input$cari, {
+    req(value_filter_kab(), value_filter_kec())
+    if (input$pilih_desa_kel == "SEMUA DESA/KEL") {
+      unique(data_nama_desa$KELURAHAN[
+        data_nama_desa$KABUPATEN %in% value_filter_kab() & 
+          data_nama_desa$KECAMATAN %in% value_filter_kec()
+      ])
+    } else {
+      input$pilih_desa_kel
     }
-    value_filter_desa_kel(filter_desa_kel) 
   })
   
-  # bulan
-  value_filter_bulan <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari, {
-    value_filter_bulan(input$pilih_bulan) 
+  value_filter_bulan <- eventReactive(input$cari, {
+    input$pilih_bulan
   })
   
   ## batas gu filter
@@ -734,7 +767,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     filtered_data <- fsubset(data_pus, 
                              KABUPATEN %in% filter_kabupaten & 
@@ -753,7 +786,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     data_terfilter <- fsubset(data_pus, 
                               KABUPATEN %in% filter_kabupaten & 
@@ -777,7 +810,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     data_terfilter <- fsubset(data_mix, 
                               KABUPATEN %in% filter_kabupaten & 
@@ -802,7 +835,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     data_terfilter <- fsubset(data_mix, 
                               KABUPATEN %in% filter_kabupaten & 
@@ -845,7 +878,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     data_terfilter <- fsubset(faskes_sdm, 
                               KABUPATEN %in% filter_kabupaten & 
@@ -872,7 +905,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(faskes_sdm, 
@@ -904,7 +937,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(faskes_sdm, 
@@ -928,7 +961,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(faskes_sdm, 
@@ -1050,7 +1083,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(sasaran_poktan, 
@@ -1078,7 +1111,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(sasaran_poktan, 
@@ -1106,7 +1139,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data berdasarkan lokasi dan bulan
     data_terfilter <- fsubset(sasaran_poktan, 
@@ -1135,7 +1168,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter dan aggregate data
     data_plot <- data_pus |>
@@ -1156,6 +1189,8 @@ server <- function(input, output, session) {
     y_min <- nilai_min - (0.05 * nilai_min)
     y_max <- nilai_max + (0.05 * nilai_max)
     
+    n_data <- nrow(data_plot)
+    
     # Buat grafik dengan label hanya angka
     data_plot |>
       e_charts(BULAN) |>
@@ -1168,9 +1203,27 @@ server <- function(input, output, session) {
              label = list(
                show = TRUE,
                position = "top",
-               fontSize = 10,
-               fontWeight = "bold"
-             )) |>
+               fontSize = 13,
+               fontWeight = "bold",
+               formatter = htmlwidgets::JS(
+                 paste0(
+                   "function(params){
+                       var value = params.value[1];
+                       var index = params.dataIndex;
+                       var total = ", n_data, "; // Nilai R dimasukkan di sini
+                       
+                       // Gunakan kurung kurawal tunggal biasa untuk sintaks JavaScript
+                       if (index === 0 || index === (total - 1)) {
+                         // Formatter angka ribuan seperti yang Anda miliki
+                         return new Intl.NumberFormat('id-ID').format(value);
+                       } else {
+                         return ''; // Kosongkan label
+                       }
+                    }"
+                 )
+               )
+             )
+      ) |>
       e_tooltip(
         trigger = "axis"
       ) |>
@@ -1205,7 +1258,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter dan aggregate data
     data_plot <- data_mix |>
@@ -1226,6 +1279,8 @@ server <- function(input, output, session) {
     y_min <- nilai_min * 0.95
     y_max <- nilai_max * 1.05
     
+    n_data <- nrow(data_plot)
+    
     # Buat grafik dengan warna kuning seperti Python
     data_plot |>
       e_charts(BULAN) |>
@@ -1238,14 +1293,25 @@ server <- function(input, output, session) {
              label = list(
                show = TRUE,
                position = "top",
-               fontSize = 10,
+               fontSize = 13,
                fontWeight = "bold",
                color = "#1f77b4", # warna biru untuk label
                formatter = htmlwidgets::JS(
-                 "function(params) {
-                  var value = typeof params.value === 'number' ? params.value : params.value[1];
-                  return value.toLocaleString('en-US').replace(/,/g, '.');
-                }"
+                 paste0(
+                   "function(params){
+                       var value = params.value[1];
+                       var index = params.dataIndex;
+                       var total = ", n_data, "; // Nilai R dimasukkan di sini
+                       
+                       // Gunakan kurung kurawal tunggal biasa untuk sintaks JavaScript
+                       if (index === 0 || index === (total - 1)) {
+                         // Formatter angka ribuan seperti yang Anda miliki
+                         return new Intl.NumberFormat('id-ID').format(value);
+                       } else {
+                         return ''; // Kosongkan label
+                       }
+                    }"
+                 )
                )
              )) |>
       e_tooltip(
@@ -1296,7 +1362,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter dan aggregate data (hitung persentase)
     data_terfilter <- data_pus |>
@@ -1335,7 +1401,7 @@ server <- function(input, output, session) {
              label = list(
                show = TRUE,
                position = "top",
-               fontSize = 10,
+               fontSize = 12,
                fontWeight = "bold",
                color = "#ff7f0e"
              )) |>
@@ -1372,7 +1438,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data
     data_terfilter <- data_mix |>
@@ -1414,7 +1480,7 @@ server <- function(input, output, session) {
              label = list(
                show = TRUE,
                position = "top",
-               fontSize = 10,
+               fontSize = 12,
                fontWeight = "bold",
                color = "#1f77b4" # label biru
              )) |>
@@ -1426,7 +1492,10 @@ server <- function(input, output, session) {
       e_x_axis(
         axisLabel = list(
           interval = 0, 
-          rotate = 0
+          rotate = 0,
+          formatter = htmlwidgets::JS(
+            "function(value) { return value.substring(0, 3); }"
+          )
         )
       ) |>
       e_y_axis(
@@ -1446,7 +1515,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()  
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Filter data untuk bulan terpilih saja
     data_terfilter <- data_mix |>
@@ -1496,8 +1565,16 @@ server <- function(input, output, session) {
             label = list(
               show = TRUE,
               position = "right",
-              fontSize = 10,
-              fontWeight = "bold"
+              fontSize = 15,
+              fontWeight = "bold",
+              formatter = htmlwidgets::JS(
+                "function(params){
+                  var value = params.value[0]; 
+                  // Menggunakan 'id-ID' untuk pemisah ribuan berupa TITIK
+                  // Ganti dengan 'en-US' jika Anda ingin pemisah ribuan KOMA
+                  return new Intl.NumberFormat('id-ID').format(value);
+                }"
+              )
             )) |>
       e_flip_coords() |> # Membuat horizontal bar
       e_tooltip(
@@ -1602,7 +1679,7 @@ server <- function(input, output, session) {
           return params.name + '\\n' + params.percent + '%';
         }
       "),
-        fontSize = 11
+        fontSize = 14
       ) |>
       e_grid(
         left = 0,
@@ -1632,7 +1709,7 @@ server <- function(input, output, session) {
       kabupaten <- value_filter_kab(),
       kecamatan <- value_filter_kec()    ,
       desa <- value_filter_desa_kel(),
-      bulan <- input$pilih_bulan
+      bulan <- value_filter_bulan()
     )
   }) |> bindEvent(input$cari)
   
@@ -1752,7 +1829,7 @@ server <- function(input, output, session) {
     filter_kabupaten <- value_filter_kab()
     filter_kecamatan <- value_filter_kec()
     filter_desa <- value_filter_desa_kel()
-    filter_bulan <- input$pilih_bulan
+    filter_bulan <- value_filter_bulan()
     
     # Tentukan jenjang berdasarkan pilihan
     if(input$pilih_kab == "SEMUA KABUPATEN") {
@@ -1855,7 +1932,7 @@ server <- function(input, output, session) {
       gt() |>
       tab_header(
         title = "Data Laporan Kelompok Kegiatan/Setara",
-        subtitle = paste("New SIGA - ", input$pilih_bulan, " 2025")
+        subtitle = paste("New SIGA - ", value_filter_bulan(), " 2025")
       ) |>
       cols_align(
         align = "center",
@@ -2090,11 +2167,11 @@ server <- function(input, output, session) {
   # })
   
   # bulan
-  value_filter_bulan_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  
-  observeEvent(input$cari_sipacoai, {
-    value_filter_bulan(input$pilih_bulan_sipacoai) 
-  })
+  # value_filter_bulan_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # 
+  # observeEvent(input$cari_sipacoai, {
+  #   value_filter_bulan(input$pilih_bulan_sipacoai) 
+  # })
   
   # Jika ingin lebih reaktif dan modular
   value_filter_kab_sipacoai <- eventReactive(input$cari_sipacoai, {
@@ -2125,6 +2202,12 @@ server <- function(input, output, session) {
       input$pilih_desa_kel_sipacoai
     }
   })
+  
+  value_filter_bulan_sipacoai <- eventReactive(input$cari_sipacoai, {
+    input$pilih_bulan_sipacoai
+  })
+  
+  
   
   ## batas gu filter
   
