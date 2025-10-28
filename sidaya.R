@@ -20,3 +20,20 @@ fst::write_fst(df_bersih, "I:/Datin/Project/profil_sipacoai/data/sidaya.fst")
 
 
 setwd("I:/Datin/Project/profil_desa_r")
+
+cars |>
+  dplyr::mutate(
+    dist = dist / 120
+  ) |>
+  e_charts(speed) |>
+  e_scatter(dist, symbol_size = 5) |>
+  e_tooltip(
+    trigger = "axis",
+    formatter = htmlwidgets::JS("
+      function(params) {
+        return params[0].axisValue + '<br/>' +
+               params[0].seriesName + ': ' +
+               params[0].value.toString().replace('.', ',');
+      }
+    ")
+  )

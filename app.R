@@ -1397,17 +1397,10 @@ server <- function(input, output, session) {
              smooth = TRUE, 
              symbol = "circle", 
              symbolSize = 8,
-             lineStyle = list(width = 3),
-             label = list(
-               show = TRUE,
-               position = "top",
-               fontSize = 12,
-               fontWeight = "bold",
-               color = "#ff7f0e"
-             )) |>
+             lineStyle = list(width = 3)
+      ) |>
       e_tooltip(
         trigger = "axis"
-        
       ) |>
       e_title("Tren Persentase Unmet Need",
               textStyle = list(fontSize = 16, fontWeight = "bold")) |>
@@ -1425,10 +1418,24 @@ server <- function(input, output, session) {
         nameTextStyle = list(fontSize = 12),
         min = round(y_min),
         max = round(y_max),
-        splitLine = list(show = FALSE)
+        splitLine = list(show = FALSE),
+        axisLabel = list(
+          formatter = htmlwidgets::JS("
+            function(value) {
+              return value.toString().replace('.', ',');
+            }
+        ")
+        )
       ) |>
       e_theme("default") |>
-      e_legend(show = FALSE)
+      e_legend(show = FALSE) |>
+      e_labels(
+        show = T,
+        position = "top",
+        fontSize = 13,
+        fontWeight = "bold",
+        color = "#d4a017" # warna biru untuk label
+      )
   })
   
   # Output untuk tren MKJP
@@ -1821,9 +1828,9 @@ server <- function(input, output, session) {
   })
 
   # Buat reactive value untuk data tabel
-  tabel_data <- reactive({
+  tabel_data <- eventReactive(input$cari, {
     # Trigger saat tombol cari ditekan
-    input$cari
+    req(input$cari)
     
     # Ambil nilai filter
     filter_kabupaten <- value_filter_kab()
@@ -1928,6 +1935,8 @@ server <- function(input, output, session) {
   
   # Output tabel GT menggunakan reactive data
   output$tabel_poktan_reactable <- render_gt({
+   
+    
     tabel_data() |>
       gt() |>
       tab_header(
