@@ -1416,7 +1416,7 @@ server <- function(input, output, session) {
       e_y_axis(
         name = "%",
         nameTextStyle = list(fontSize = 12),
-        min = round(y_min),
+        min = floor(y_min),
         max = round(y_max),
         splitLine = list(show = FALSE),
         axisLabel = list(
@@ -1508,7 +1508,7 @@ server <- function(input, output, session) {
       e_y_axis(
         name = "%",
         nameTextStyle = list(fontSize = 12),
-        min = round(y_min),
+        min = floor(y_min),
         max = round(y_max)
       ) |>
       e_theme("default") |>
