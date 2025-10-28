@@ -405,7 +405,7 @@ ui <- page_navbar(
       layout_column_wrap(
         value_box(
           title = "Lansia (SIDAYA)",
-          value = "Jumlah",
+          value = textOutput("jumlah_sidaya_sipacoai"),
           showcase = bsicons::bs_icon("person-walking"),
           showcase_layout = "top right",
           theme = "warning",
@@ -2430,6 +2430,33 @@ server <- function(input, output, session) {
       as.numeric()
     
     paste0(format(round(edukasi_kbpp, 2), decimal.mark = ","), "%")
+  })
+  
+  data_sidaya <- read_fst("data/sidaya.fst")
+  # Reactive function untuk jumlah PIKR
+  output$jumlah_sidaya_sipacoai <- renderText({
+    # Trigger reactive event berdasarkan action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+   # filter_bulan <- input$pilih_bulan_sipacoai
+    
+    result <- data_sidaya |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa #&
+          #BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
+      fselect(SIDAYA) |>
+      unlist() |>
+      as.numeric()
+    
+    paste0(format(result, big.mark = ".", scientific = FALSE))
   })
   
   # Reactive function untuk jumlah PIKR
