@@ -2275,18 +2275,19 @@ server <- function(input, output, session) {
                               BULAN %in% filter_bulan)
     
     bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKB = fsum(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN`, na.rm = TRUE))
+      fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
+    
     
     # --- Agregasi BKR ---
     # Note: Assuming data_bkr exists - you'll need to load it
     bkr_filtered <- fsubset(data_bkr,
-                           KABUPATEN %in% filter_kabupaten &
-                           KECAMATAN %in% filter_kecamatan &
-                           KELURAHAN %in% filter_desa &
-                           BULAN %in% filter_bulan)
-
+                            KABUPATEN %in% filter_kabupaten &
+                              KECAMATAN %in% filter_kecamatan &
+                              KELURAHAN %in% filter_desa &
+                              BULAN %in% filter_bulan)
+    
     bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKR = fsum(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN`, na.rm = TRUE))
+      fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
     
     # For demonstration, creating dummy BKR data
     # bkr_hadir <- data.frame(
@@ -2297,13 +2298,13 @@ server <- function(input, output, session) {
     # --- Agregasi BKL ---
     # Note: Assuming data_bkl exists - you'll need to load it
     bkl_filtered <- fsubset(data_bkl,
-                           KABUPATEN %in% filter_kabupaten &
-                           KECAMATAN %in% filter_kecamatan &
-                           KELURAHAN %in% filter_desa &
-                           BULAN %in% filter_bulan)
-
+                            KABUPATEN %in% filter_kabupaten &
+                              KECAMATAN %in% filter_kecamatan &
+                              KELURAHAN %in% filter_desa &
+                              BULAN %in% filter_bulan)
+    
     bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKL = fsum(`JUMLAH ANGGOTA KELUARGA HADIR`, na.rm = TRUE))
+      fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
     
     # For demonstration, creating dummy BKL data
     # bkl_hadir <- data.frame(
@@ -2314,43 +2315,29 @@ server <- function(input, output, session) {
     # --- Agregasi PUS ---
     # Note: Assuming data_pus exists - you'll need to load it
     pus_filtered <- fsubset(data_pus,
-                           KABUPATEN %in% filter_kabupaten &
-                           KECAMATAN %in% filter_kecamatan &
-                           KELURAHAN %in% filter_desa &
-                           BULAN %in% filter_bulan)
-
+                            KABUPATEN %in% filter_kabupaten &
+                              KECAMATAN %in% filter_kecamatan &
+                              KELURAHAN %in% filter_desa &
+                              BULAN %in% filter_bulan)
+    
     pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
-      fsummarise(Jumlah_PUS = fsum(PUS, na.rm = TRUE))
+      fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
     
-    # For demonstration, creating dummy PUS data
-    # pus_total <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Jumlah_PUS = 100 # dummy value
-    # )
+    pa_filtered <- fsubset(data_mix,
+                           KABUPATEN %in% filter_kabupaten &
+                             KECAMATAN %in% filter_kecamatan &
+                             KELURAHAN %in% filter_desa &
+                             BULAN %in% filter_bulan)
     
-    # Gabungkan semua data
-    df_gabungan <- merge(bkb_hadir, bkr_hadir, by = "PROVINSI", all = TRUE)
-    df_gabungan <- merge(df_gabungan, bkl_hadir, by = "PROVINSI", all = TRUE)
-    df_gabungan <- merge(df_gabungan, pus_total, by = "PROVINSI", all = TRUE)
+    pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
+      fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
     
-    # Isi nilai NA dengan 0
-    df_gabungan[is.na(df_gabungan)] <- 0
-    
-    # Terapkan rumus: ((BKB + BKR + BKL) / 3) / PUS
-    df_gabungan$Pembilang <- (df_gabungan$Keluarga_Hadir_BKB + 
-                                df_gabungan$Keluarga_Hadir_BKR + 
-                                df_gabungan$Keluarga_Hadir_BKL) / 3
-    
-    # Pembagian akhir dengan penanganan pembagian dengan nol
-    df_gabungan$Jumlah_Hasil_Akhir <- ifelse(df_gabungan$Jumlah_PUS > 0,
-                                             df_gabungan$Pembilang / df_gabungan$Jumlah_PUS,
-                                             0)
-    
-    # Ambil hasil akhir
-    hasil_akhir <- df_gabungan$Jumlah_Hasil_Akhir[1]
+    pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
     
     # Format hasil sebagai persentase
-    hasil_persen <- round(hasil_akhir * 100, 2)
+    hasil_persen <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
     hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
     
     paste0(hasil_formatted, "%")
