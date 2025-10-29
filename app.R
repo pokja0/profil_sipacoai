@@ -64,23 +64,33 @@ ui <- page_navbar(
         # Baris 1: PKB/PLKB & Tim Pendamping Keluarga (Layout 2 kolom)
         fluidRow(
           column(6,
-                 value_box(
-                   title = "PKB / PLKB",
-                   value = textOutput("nama_pkb"), 
-                   showcase = fa_icon("id-card"),
-                   showcase_layout = "left center",
-                   textOutput("jumlah_wilker"),
-                   # Sesuaikan warna jika perlu, default-nya netral
-                   theme = "white" # Gunakan tema terang untuk yang ini
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Tahunan/Tabel2A",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "PKB / PLKB",
+                     value = textOutput("nama_pkb"), 
+                     showcase = fa_icon("id-card"),
+                     showcase_layout = "left center",
+                     textOutput("jumlah_wilker"),
+                     # Sesuaikan warna jika perlu, default-nya netral
+                     theme = "white" # Gunakan tema terang untuk yang ini
+                   )
                  )
           ),
           column(6,
-                 value_box(
-                   title = "Tim Pendamping Keluarga",
-                   value = textOutput("jumlah_tpk"),
-                   showcase = bs_icon("universal-access"),
-                   showcase_layout = "left center",
-                   theme = "white"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/tpk/monitoring_tpk",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Tim Pendamping Keluarga",
+                     value = textOutput("jumlah_tpk"),
+                     showcase = bs_icon("universal-access"),
+                     showcase_layout = "left center",
+                     theme = "white"
+                   )
                  )
           )
         ),
@@ -88,35 +98,55 @@ ui <- page_navbar(
         # Baris 2: Pasangan Usia Subur, Unmet Need, KB MKJP, Kontrasepsi Favorit (Layout 4 kolom)
         fluidRow(
           column(3,
-                 value_box(
-                   title = "Pasangan Usia Subur",
-                   value = textOutput("jumlah_pus"),
-                   showcase = bs_icon("person-hearts"),
-                   theme = "primary" # Gunakan warna biru/primary
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Pasangan Usia Subur",
+                     value = textOutput("jumlah_pus"),
+                     showcase = bs_icon("person-hearts"),
+                     theme = "primary" # Gunakan warna biru/primary
+                   )
                  )
           ),
           column(3,
-                 value_box(
-                   title = "Unmet Need",
-                   value = textOutput("persentase_unmet_need"),
-                   showcase = bs_icon("person-fill-exclamation"),
-                   theme = "primary"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Unmet Need",
+                     value = textOutput("persentase_unmet_need"),
+                     showcase = bs_icon("person-fill-exclamation"),
+                     theme = "primary"
+                   )
                  )
           ),
           column(3,
-                 value_box(
-                   title = "KB MKJP",
-                   value = textOutput("persentase_mkjp"),
-                   showcase = bs_icon("journal-medical"),
-                   theme = "primary"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel11",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "KB MKJP",
+                     value = textOutput("persentase_mkjp"),
+                     showcase = bs_icon("journal-medical"),
+                     theme = "primary"
+                   )
                  )
           ),
           column(3,
-                 value_box(
-                   title = "Kontrasepsi Favorit",
-                   value = textOutput("kontrasepsi_favorit"),
-                   showcase = bs_icon("capsule-pill"), # Gunakan ikon yang sama atau serupa
-                   theme = "primary"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel11",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Kontrasepsi Favorit",
+                     value = textOutput("kontrasepsi_favorit"),
+                     showcase = bs_icon("capsule-pill"), # Gunakan ikon yang sama atau serupa
+                     theme = "primary"
+                   )
                  )
           )
         ),
@@ -124,39 +154,59 @@ ui <- page_navbar(
         # Baris 3: Tempat Pelayanan KB, Tempat Pelayanan KB Terlatih, Tenaga Kesehatan Pelayanan KB, Tenaga Kesehatan Pelayanan KB Terlatih (Layout 4 kolom)
         fluidRow(
           column(3,
-                 value_box(
-                   title = "Tempat Pelayanan KB",
-                   value = textOutput("tempat_pelayanan_kb"),
-                   showcase = bs_icon("house"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/yankbDetail/YanKB-Tahunan-Kec/Tabel1",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Tempat Pelayanan KB",
+                     value = textOutput("tempat_pelayanan_kb"),
+                     showcase = bs_icon("house"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
+                  )
+          ),
+          column(3,
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/yankbDetail/YanKB-Tahunan-Kec/Tabel7B",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Tempat Pelayanan KB Terlatih",
+                     value = textOutput("tempat_pelayanan_kb_terlatih"),
+                     showcase = bs_icon("hospital-fill"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           ),
           column(3,
-                 value_box(
-                   title = "Tempat Pelayanan KB Terlatih",
-                   value = textOutput("tempat_pelayanan_kb_terlatih"),
-                   showcase = bs_icon("hospital-fill"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/yankbDetail/YanKB-Tahunan-Kec/Tabel7B",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Tenaga Kesehatan KB",
+                     value = textOutput("tenaga_kesehatan_kb"),
+                     showcase = bs_icon("person-bounding-box"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           ),
           column(3,
-                 value_box(
-                   title = "Tenaga Kesehatan KB",
-                   value = textOutput("tenaga_kesehatan_kb"),
-                   showcase = bs_icon("person-bounding-box"),
-                   showcase_layout = "left center",
-                   theme = "white" 
-                 )
-          ),
-          column(3,
-                 value_box(
-                   title = "Tenaga Kesehatan KB Terlatih",
-                   value = textOutput("tenaga_kesehatan_kb_terlatih"),
-                   showcase = bs_icon("person-badge-fill"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Tenaga Kesehatan KB Terlatih",
+                     value = textOutput("tenaga_kesehatan_kb_terlatih"),
+                     showcase = bs_icon("person-badge-fill"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           )
         ),
@@ -164,27 +214,42 @@ ui <- page_navbar(
         # Baris 4: Jumlah KRS, Keluarga Punya BADUTA, PUS Hamil (Layout 3 kolom, mengambil 3/4 lebar)
         fluidRow(
           column(4,
-                 value_box(
-                   title = "Jumlah KRS",
-                   value = textOutput("jumlah_krs"),
-                   showcase = bs_icon("person-fill-x"),
-                   theme = "primary"
+                 tags$a(
+                   href = "https://portalpk-siga.bkkbn.go.id/tabulasi/STUNTING/Tabel4",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Jumlah KRS",
+                     value = textOutput("jumlah_krs"),
+                     showcase = bs_icon("person-fill-x"),
+                     theme = "primary"
+                   )
                  )
           ),
           column(4,
-                 value_box(
-                   title = "Keluarga Punya BADUTA",
-                   value = textOutput("jumlah_keluarga_punya_baduta"),
-                   showcase = bs_icon("person"),
-                   theme = "primary"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Keluarga Punya BADUTA",
+                     value = textOutput("jumlah_keluarga_punya_baduta"),
+                     showcase = bs_icon("person"),
+                     theme = "primary"
+                   )
                  )
           ),
           column(4,
-                 value_box(
-                   title = "PUS Hamil",
-                   value = textOutput("jumlah_pus_hamil"),
-                   showcase = bs_icon("person-standing-dress"),
-                   theme = "primary"
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "PUS Hamil",
+                     value = textOutput("jumlah_pus_hamil"),
+                     showcase = bs_icon("person-standing-dress"),
+                     theme = "primary"
+                   )
                  )
           )
         ),
@@ -192,30 +257,45 @@ ui <- page_navbar(
         # Baris 5: Sasaran BKB, Sasaran BKR, Sasaran BKL (Layout 3 kolom, dengan value box putih/terang)
         fluidRow(
           column(4,
-                 value_box(
-                   title = "Sasaran BKB",
-                   value = textOutput("jumlah_sasaran_bkb"),
-                   showcase = bs_icon("person-fill-check"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Sasaran BKB",
+                     value = textOutput("jumlah_sasaran_bkb"),
+                     showcase = bs_icon("person-fill-check"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           ),
           column(4,
-                 value_box(
-                   title = "Sasaran BKR",
-                   value = textOutput("jumlah_sasaran_bkr"),
-                   showcase = bs_icon("person-standing"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Sasaran BKR",
+                     value = textOutput("jumlah_sasaran_bkr"),
+                     showcase = bs_icon("person-standing"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           ),
           column(4,
-                 value_box(
-                   title = "Sasaran BKL",
-                   value = textOutput("jumlah_sasaran_bkl"),
-                   showcase = bs_icon("person-wheelchair"),
-                   showcase_layout = "left center",
-                   theme = "white" 
+                 tags$a(
+                   href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+                   target = "_blank",
+                   style = "text-decoration: none; color: inherit;",
+                   value_box(
+                     title = "Sasaran BKL",
+                     value = textOutput("jumlah_sasaran_bkl"),
+                     showcase = bs_icon("person-wheelchair"),
+                     showcase_layout = "left center",
+                     theme = "white" 
+                   )
                  )
           )
         )
@@ -347,93 +427,143 @@ ui <- page_navbar(
       h5(textOutput("tes_input_rekap_sipacoai"), style="text-align: center;"),
       # Baris pertama value boxes
       layout_column_wrap(
-        value_box(
-          title = "Keluarga Mendapat Pendampingan",
-          value = textOutput("jumlah_pendampingan_keluarga"),
-          showcase = bsicons::bs_icon("house-heart"),
-          showcase_layout = "top right",
-          theme = "warning",
-          p("Edukasi, Fasilitasi Bantuan dan Fasilitasi Rujukan")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Keluarga Mendapat Pendampingan",
+            value = textOutput("jumlah_pendampingan_keluarga"),
+            showcase = bsicons::bs_icon("house-heart"),
+            showcase_layout = "top right",
+            theme = "warning",
+            p("Edukasi, Fasilitasi Bantuan dan Fasilitasi Rujukan")
+          )
         ),
-        value_box(
-          title = "Sasaran Hadir Posyandu", 
-          value = "%",
-          showcase = bsicons::bs_icon("person-hearts"),
-          showcase_layout = "top right",
-          theme = "primary",
-          p("Bumil dan Baduta")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Sasaran Hadir Posyandu", 
+            value = "%",
+            showcase = bsicons::bs_icon("person-hearts"),
+            showcase_layout = "top right",
+            theme = "primary",
+            p("Bumil dan Baduta")
+          )
         ),
-        value_box(
-          title = "Perkembangan Anak",
-          value = textOutput("jumlah_penggunaan_kka"),
-          showcase = bsicons::bs_icon("people"),
-          showcase_layout = "top right", 
-          theme = "warning",
-          p("Jumlah Balita Dipantau dengan KKA")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Perkembangan Anak",
+            value = textOutput("jumlah_penggunaan_kka"),
+            showcase = bsicons::bs_icon("people"),
+            showcase_layout = "top right", 
+            theme = "warning",
+            p("Jumlah Balita Dipantau dengan KKA")
+          )
         )
       ),
       
       # Baris kedua value boxes
       layout_column_wrap(
-        value_box(
-          title = "Genting",
-          value = "%",
-          showcase = fa_icon("baby"),
-          showcase_layout = "top right",
-          theme = "primary",
-          p("Gerakan Orang Tua Asuh Cegah Stunting")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Genting",
+            value = "%",
+            showcase = fa_icon("baby"),
+            showcase_layout = "top right",
+            theme = "primary",
+            p("Gerakan Orang Tua Asuh Cegah Stunting")
+          )
         ),
-        value_box(
-          title = "Tamasya", 
-          value = "%",
-          showcase = bsicons::bs_icon("emoji-smile"),
-          showcase_layout = "top right",
-          theme = "warning",
-          p("Taman Asuh Sayang Anak")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Tamasya", 
+            value = "%",
+            showcase = bsicons::bs_icon("emoji-smile"),
+            showcase_layout = "top right",
+            theme = "warning",
+            p("Taman Asuh Sayang Anak")
+          )
         ),
-        value_box(
-          title = "Edukasi KBPP",
-          value = textOutput("jumlah_edukasi_kbpp"),
-          showcase = bsicons::bs_icon("person-plus"),
-          showcase_layout = "top right",
-          theme = "primary",
-          p("Ibu Hamil dan Pascasalin")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Edukasi KBPP",
+            value = textOutput("jumlah_edukasi_kbpp"),
+            showcase = bsicons::bs_icon("person-plus"),
+            showcase_layout = "top right",
+            theme = "primary",
+            p("Ibu Hamil dan Pascasalin")
+          )
         )
       ),
       
       # Baris ketiga value boxes
       layout_column_wrap(
-        value_box(
-          title = "Lansia (SIDAYA)",
-          value = textOutput("jumlah_sidaya_sipacoai"),
-          showcase = bsicons::bs_icon("person-walking"),
-          showcase_layout = "top right",
-          theme = "warning",
-          p("Mendapatkan Pemeriksaan Kesehatan")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Lansia (SIDAYA)",
+            value = textOutput("jumlah_sidaya_sipacoai"),
+            showcase = bsicons::bs_icon("person-walking"),
+            showcase_layout = "top right",
+            theme = "warning",
+            p("Mendapatkan Pemeriksaan Kesehatan")
+          )
         ),
-        value_box(
-          title = "Remaja (PIK-R)",
-          value = textOutput("jumlah_pikr_sipacoai"),
-          showcase = bsicons::bs_icon("people"),
-          showcase_layout = "top right",
-          theme = "primary",
-          p("Jumlah Remaja Hadir Pertemuan PIK-R")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Remaja (PIK-R)",
+            value = textOutput("jumlah_pikr_sipacoai"),
+            showcase = bsicons::bs_icon("people"),
+            showcase_layout = "top right",
+            theme = "primary",
+            p("Jumlah Remaja Hadir Pertemuan PIK-R")
+          )
         ),
-        value_box(
-          title = "Ayah Teladan (GATI)",
-          value = "%", 
-          showcase = bsicons::bs_icon("person-arms-up"),
-          showcase_layout = "top right",
-          theme = "primary",
-          p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Ayah Teladan (GATI)",
+            value = "%", 
+            showcase = bsicons::bs_icon("person-arms-up"),
+            showcase_layout = "top right",
+            theme = "primary",
+            p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi")
+          )
         ),
-        value_box(
-          title = "Peserta KB Aktif",
-          value = textOutput("jumlah_mkjp_sipacoai"),
-          showcase = bsicons::bs_icon("person-plus"),
-          showcase_layout = "top right", 
-          theme = "warning",
-          p("Akseptor KB MKJP")
+        tags$a(
+          href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel11",
+          target = "_blank",
+          style = "text-decoration: none; color: inherit;",
+          value_box(
+            title = "Peserta KB Aktif",
+            value = textOutput("jumlah_mkjp_sipacoai"),
+            showcase = bsicons::bs_icon("person-plus"),
+            showcase_layout = "top right", 
+            theme = "warning",
+            p("Akseptor KB MKJP")
+          )
         )
       ),
       # Versi yang lebih ringkas
