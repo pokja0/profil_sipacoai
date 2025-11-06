@@ -34,7 +34,7 @@ ui <- page_navbar(
       ),
       column(3, selectInput("pilih_kec", "Daftar Kecamatan", choices = c("SEMUA KECAMATAN"))),
       column(3, selectInput("pilih_desa_kel", "Pilih Desa/Kel", choices = c("SEMUA DESA/KEL"))),
-      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:9], selected = "SEPTEMBER"))
+      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:10], selected = "OKTOBER"))
     ),
     br(
       
@@ -417,7 +417,7 @@ ui <- page_navbar(
                     choices = c("SEMUA KABUPATEN")),
         selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN"),
         selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL"),
-        selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:9], selected = "SEPTEMBER"),
+        selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:10], selected = "OKTOBER"),
         input_task_button(
           label_busy = "Sedang Proses",
           id = "cari_sipacoai",
@@ -476,7 +476,7 @@ ui <- page_navbar(
           style = "text-decoration: none; color: inherit;",
           value_box(
             title = "Genting",
-            value = "%",
+            value = textOutput("genting"),
             showcase = fa_icon("baby"),
             showcase_layout = "top right",
             theme = "primary",
@@ -489,7 +489,7 @@ ui <- page_navbar(
           style = "text-decoration: none; color: inherit;",
           value_box(
             title = "Tamasya", 
-            value = "%",
+            value = textOutput("tamasya"),
             showcase = bsicons::bs_icon("emoji-smile"),
             showcase_layout = "top right",
             theme = "warning",
@@ -2499,6 +2499,56 @@ server <- function(input, output, session) {
     paste0(format(result, big.mark = ".", scientific = FALSE))
   })
   
+  data_genting <- fread("data/data_genting.csv")
+  output$genting <- renderText({
+    # Trigger reactive event berdasarkan action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    result <- data_genting |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
+      fselect(GENTING) |>
+      unlist() |>
+      as.numeric()
+    paste0(format(result, big.mark = ".", scientific = FALSE))
+  })
+  
+  data_tamasya <- fread("data/data_tamasya.csv")
+  output$tamasya <- renderText({
+    # Trigger reactive event berdasarkan action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    result <- data_tamasya |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
+      fselect(`PENDAMPINGAN TPA`) |>
+      unlist() |>
+      as.numeric()
+    paste0(format(result, big.mark = ".", scientific = FALSE))
+  })
+  
   # Load data untuk edukasi KBPP
   edukasi_kbpp_bumil <- fread("data/2025-elsimil-bumil.csv", sep = ";")
   edukasi_kbpp_pascasalin <- fread("data/2025-elsimil-pascasalin.csv", sep = ";")
@@ -2518,7 +2568,8 @@ server <- function(input, output, session) {
       fsubset(
         KABUPATEN %in% filter_kabupaten &
           KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
       ) |>
       fgroup_by(PROVINSI) |>
       fsummarise(
@@ -2533,7 +2584,8 @@ server <- function(input, output, session) {
       fsubset(
         KABUPATEN %in% filter_kabupaten &
           KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
       ) |>
       fgroup_by(PROVINSI) |>
       fsummarise(
