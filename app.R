@@ -447,11 +447,12 @@ ui <- page_navbar(
           style = "text-decoration: none; color: inherit;",
           value_box(
             title = "Sasaran Hadir Posyandu", 
-            value = "%",
+            value = textOutput("ds"),
             showcase = bsicons::bs_icon("person-hearts"),
             showcase_layout = "top right",
             theme = "primary",
-            p("Bumil dan Baduta")
+            p("Bumil dan Baduta"),
+            textOutput("status_ds")
           )
         ),
         tags$a(
@@ -552,11 +553,12 @@ ui <- page_navbar(
           style = "text-decoration: none; color: inherit;",
           value_box(
             title = "Ayah Teladan (GATI)",
-            value = "%", 
+            value = textOutput("jumlah_gati_sipacoai"), 
             showcase = bsicons::bs_icon("person-arms-up"),
             showcase_layout = "top right",
             theme = "primary",
-            p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi")
+            p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi"),
+            textOutput("status_jumlah_gati_sipacoai")
           )
         ),
         tags$a(
@@ -2684,6 +2686,78 @@ server <- function(input, output, session) {
     
   }) 
   
+  data_ds <- fread("data/data_ds.csv")
+  output$ds <- renderText({
+    # React to action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    # --- Agregasi BKB ---
+    # Filter and aggregate BKB data
+    data_ds <- fsubset(data_ds, 
+                            KABUPATEN %in% filter_kabupaten &
+                              KECAMATAN %in% filter_kecamatan &
+                              KELURAHAN %in% filter_desa &
+                              BULAN %in% filter_bulan)
+    
+    data_ds <- fgroup_by(data_ds, PROVINSI) %>%
+      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+    
+    hasil_formatted <- gsub("\\.", ",", format(round(data_ds$DS, 2), nsmall = 2))
+    
+    paste0(hasil_formatted, "%")
+  })
+  
+  output$status_ds <- renderText({
+    # React to action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    
+    # --- Agregasi BKB ---
+    # Filter and aggregate BKB data
+    data_ds_sebelum <- fsubset(data_ds, 
+                               KABUPATEN %in% filter_kabupaten &
+                                 KECAMATAN %in% filter_kecamatan &
+                                 KELURAHAN %in% filter_desa &
+                                 BULAN %in% BULAN)
+    
+    
+    data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
+      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+    # --- Agregasi BKB ---
+    # Filter and aggregate BKB data
+    data_ds <- fsubset(data_ds, 
+                       KABUPATEN %in% filter_kabupaten &
+                         KECAMATAN %in% filter_kecamatan &
+                         KELURAHAN %in% filter_desa &
+                         BULAN %in% filter_bulan)
+    
+    data_ds <- fgroup_by(data_ds, PROVINSI) %>%
+      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+    
+  #  selisih <- round(data_ds$DS - data_ds_sebelum$DS, 2)
+    selisih <- gsub("\\.", ",", format(round(data_ds$DS - data_ds_sebelum$DS, 2), nsmall = 2))
+    if (data_ds$DS > data_ds_sebelum$DS) {
+      # Nilai A lebih tinggi - tampilkan text naik
+      paste0("↑ NAIK ", selisih, "% dari September")
+    } else if (data_ds$DS < data_ds_sebelum$DS) {
+      # Nilai A lebih rendah - tampilkan text turun  
+      paste0("↓ TURUN ", selisih, "% dari September")
+    } else {
+      # Nilai sama - tampilkan text sama
+      paste0("Sama dengan Bulan September")
+    }
+  })
+  
   # Reactive function untuk jumlah penggunaan KKA
   output$jumlah_penggunaan_kka <- renderText({
     # Trigger reactive event berdasarkan action button
@@ -3219,6 +3293,82 @@ server <- function(input, output, session) {
       fgroup_by(PROVINSI) |>
       fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
       fselect(JUMLAH_REMAJA) |>
+      unlist() |>
+      as.numeric()
+    
+    
+    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+    
+    if (result > result_sebelum) {
+      # Nilai A lebih tinggi - tampilkan text naik
+      paste0("↑ NAIK ", selisih, " dari September")
+    } else if (result < result_sebelum) {
+      # Nilai A lebih rendah - tampilkan text turun  
+      paste0("↓ TURUN ", selisih, " dari September")
+    } else {
+      # Nilai sama - tampilkan text sama
+      paste0("Sama dengan Bulan September")
+    }
+  })
+  
+  data_gati <- fread("data/data_gati.csv")
+  output$jumlah_gati_sipacoai <- renderText({
+    # Trigger reactive event berdasarkan action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    result <- data_gati |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+      fselect(GATI) |>
+      unlist() |>
+      as.numeric()
+    
+    paste0(format(result, big.mark = ".", scientific = FALSE))
+  })
+  
+  output$status_jumlah_gati_sipacoai <- renderText({
+    # Trigger reactive event berdasarkan action button
+    req(input$cari_sipacoai)
+    
+    filter_kabupaten <- value_filter_kab_sipacoai()
+    filter_kecamatan <- value_filter_kec_sipacoai() 
+    filter_desa <- value_filter_desa_kel_sipacoai()
+    filter_bulan <- input$pilih_bulan_sipacoai
+    
+    result <- data_gati |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+      fselect(GATI) |>
+      unlist() |>
+      as.numeric()
+    
+    result_sebelum <- data_gati |>
+      fsubset(
+        KABUPATEN %in% filter_kabupaten &
+          KECAMATAN %in% filter_kecamatan &
+          KELURAHAN %in% filter_desa &
+          BULAN %in% filter_bulan
+      ) |>
+      fgroup_by(PROVINSI) |>
+      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+      fselect(GATI) |>
       unlist() |>
       as.numeric()
     
