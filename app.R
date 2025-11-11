@@ -2691,71 +2691,102 @@ server <- function(input, output, session) {
     # React to action button
     req(input$cari_sipacoai)
     
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    data_ds <- fsubset(data_ds, 
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    data_ds <- fgroup_by(data_ds, PROVINSI) %>%
-      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-    
-    hasil_formatted <- gsub("\\.", ",", format(round(data_ds$DS, 2), nsmall = 2))
-    
-    paste0(hasil_formatted, "%")
+    # Wrap dalam tryCatch untuk handle error
+    tryCatch({
+      filter_kabupaten <- value_filter_kab_sipacoai()
+      filter_kecamatan <- value_filter_kec_sipacoai() 
+      filter_desa <- value_filter_desa_kel_sipacoai()
+      filter_bulan <- input$pilih_bulan_sipacoai
+      
+      # --- Agregasi BKB ---
+      # Filter and aggregate BKB data
+      data_ds <- fsubset(data_ds, 
+                         KABUPATEN %in% filter_kabupaten &
+                           KECAMATAN %in% filter_kecamatan &
+                           KELURAHAN %in% filter_desa &
+                           BULAN %in% filter_bulan)
+      
+      data_ds <- fgroup_by(data_ds, PROVINSI) %>%
+        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+      
+      # Handle NaN, NA, atau Inf - ubah jadi 0
+      if(nrow(data_ds) == 0 || is.na(data_ds$DS) || is.nan(data_ds$DS) || is.infinite(data_ds$DS)) {
+        hasil_formatted <- "0,00"
+      } else {
+        hasil_formatted <- gsub("\\.", ",", format(round(data_ds$DS, 2), nsmall = 2))
+      }
+      
+      paste0(hasil_formatted, "%")
+      
+    }, error = function(e) {
+      # Jika terjadi error, return 0%
+      return("0,00%")
+    })
   })
   
   output$status_ds <- renderText({
     # React to action button
     req(input$cari_sipacoai)
     
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    data_ds_sebelum <- fsubset(data_ds, 
-                               KABUPATEN %in% filter_kabupaten &
-                                 KECAMATAN %in% filter_kecamatan &
-                                 KELURAHAN %in% filter_desa &
-                                 BULAN %in% BULAN)
-    
-    
-    data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
-      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    data_ds <- fsubset(data_ds, 
-                       KABUPATEN %in% filter_kabupaten &
-                         KECAMATAN %in% filter_kecamatan &
-                         KELURAHAN %in% filter_desa &
-                         BULAN %in% filter_bulan)
-    
-    data_ds <- fgroup_by(data_ds, PROVINSI) %>%
-      fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-    
-  #  selisih <- round(data_ds$DS - data_ds_sebelum$DS, 2)
-    selisih <- gsub("\\.", ",", format(round(data_ds$DS - data_ds_sebelum$DS, 2), nsmall = 2))
-    if (data_ds$DS > data_ds_sebelum$DS) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, "% dari September")
-    } else if (data_ds$DS < data_ds_sebelum$DS) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, "% dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
+    # Wrap dalam tryCatch untuk handle error
+    tryCatch({
+      filter_kabupaten <- value_filter_kab_sipacoai()
+      filter_kecamatan <- value_filter_kec_sipacoai() 
+      filter_desa <- value_filter_desa_kel_sipacoai()
+      filter_bulan <- input$pilih_bulan_sipacoai
+      
+      # --- Agregasi data sebelum ---
+      data_ds_sebelum <- fsubset(data_ds, 
+                                 KABUPATEN %in% filter_kabupaten &
+                                   KECAMATAN %in% filter_kecamatan &
+                                   KELURAHAN %in% filter_desa &
+                                   BULAN %in% BULAN)
+      
+      data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
+        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+      
+      # --- Agregasi data current ---
+      data_ds_current <- fsubset(data_ds, 
+                                 KABUPATEN %in% filter_kabupaten &
+                                   KECAMATAN %in% filter_kecamatan &
+                                   KELURAHAN %in% filter_desa &
+                                   BULAN %in% filter_bulan)
+      
+      data_ds_current <- fgroup_by(data_ds_current, PROVINSI) %>%
+        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+      
+      # Handle NaN, NA, atau Inf untuk kedua dataset
+      if(nrow(data_ds_sebelum) == 0 || is.na(data_ds_sebelum$DS) || is.nan(data_ds_sebelum$DS) || is.infinite(data_ds_sebelum$DS)) {
+        data_ds_sebelum$DS <- 0
+      }
+      
+      if(nrow(data_ds_current) == 0 || is.na(data_ds_current$DS) || is.nan(data_ds_current$DS) || is.infinite(data_ds_current$DS)) {
+        data_ds_current$DS <- 0
+      }
+      
+      # Hitung selisih
+      selisih_value <- data_ds_current$DS - data_ds_sebelum$DS
+      
+      # Handle NaN/NA pada selisih
+      if(is.na(selisih_value) || is.nan(selisih_value) || is.infinite(selisih_value)) {
+        selisih_value <- 0
+      }
+      
+      selisih <- gsub("\\.", ",", format(round(selisih_value, 2), nsmall = 2))
+      
+      # Tentukan status berdasarkan perbandingan
+      if (data_ds_current$DS > data_ds_sebelum$DS) {
+        paste0("↑ NAIK ", selisih, "% dari September")
+      } else if (data_ds_current$DS < data_ds_sebelum$DS) {
+        paste0("↓ TURUN ", abs(as.numeric(gsub(",", ".", selisih))), "% dari September")
+      } else {
+        "Sama dengan Bulan September"
+      }
+      
+    }, error = function(e) {
+      # Jika terjadi error, return status default
+      return("Data tidak tersedia")
+    })
   })
   
   # Reactive function untuk jumlah penggunaan KKA

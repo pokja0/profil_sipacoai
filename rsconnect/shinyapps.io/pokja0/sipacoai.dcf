@@ -5,7 +5,7 @@ account: pokja0
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 15868387
-bundleId: 11138662
+bundleId: 11160763
 url: https://pokja0.shinyapps.io/sipacoai/
 version: 1
 asMultiple: FALSE
