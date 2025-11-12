@@ -2740,7 +2740,7 @@ server <- function(input, output, session) {
                                  KABUPATEN %in% filter_kabupaten &
                                    KECAMATAN %in% filter_kecamatan &
                                    KELURAHAN %in% filter_desa &
-                                   BULAN %in% BULAN)
+                                   BULAN %in% "SEPTEMBER")
       
       data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
         fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)

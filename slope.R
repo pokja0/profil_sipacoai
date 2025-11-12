@@ -6,7 +6,7 @@ library(ggrepel)
 # Data asli dari gambar
 data_raw <- data.frame(
   Indikator = c(
-    "Keluarga Mendapat Pendampingan",
+    "Pendampingan Keluarga",
     "Sasaran Hadir Posyandu",
     "Perkembangan Anak",
     "Genting",
@@ -18,34 +18,134 @@ data_raw <- data.frame(
     "Peserta KB Aktif"
   ),
   September = c(59.33, 76.79, 33238, 6487, 37, 54.57, 2820, 15025, 11554, 35127),
-  Oktober = c(57.68, 79.96, 35749, 6487, 37, 68.7, 2829, 15900, 21544, 34581)
+  Oktober = c(57.68, 79.96, 35749, 6487, 37, 68.7, 4504, 15900, 21544, 34581)
 )
 
 # Tambahkan kolom jenis data
 data_raw <- data_raw %>%
   mutate(
     Jenis = case_when(
-      Indikator %in% c("Keluarga Mendapat Pendampingan", "Sasaran Hadir Posyandu", 
+      Indikator %in% c("Pendampingan Keluarga", "Sasaran Hadir Posyandu", 
                        "Edukasi KBPP") ~ "Persentase",
       TRUE ~ "Absolut"
     )
   )
 
 # Pisahkan data
-data_persen <- data_raw %>% filter(Jenis == "Persentase")
+
 data_absolut <- data_raw %>% filter(Jenis == "Absolut")
 
-# Tambahkan perubahan untuk label
-data_persen <- data_persen %>%
-  mutate(
-    Perubahan = Oktober - September,
-    Label_Perubahan = ifelse(Perubahan > 0, paste0("+", round(Perubahan, 2)), 
-                             ifelse(Perubahan < 0, round(Perubahan, 2), "0"))
-  )
 
 data_absolut <- data_absolut %>%
   mutate(
     Perubahan = Oktober - September,
-    Label_Perubahan = ifelse(Perubahan > 0, paste0("+", format(Perubahan, big.mark = ",", scientific = FALSE)), 
-                             ifelse(Perubahan < 0, format(Perubahan, big.mark = ",", scientific = FALSE), "0"))
+    Label_Perubahan = ifelse(Perubahan > 0, paste0("+", format(Perubahan, big.mark = ".", scientific = FALSE)), 
+                             ifelse(Perubahan < 0, format(Perubahan, big.mark = ".", scientific = FALSE), "0")),
+    Label_Perubahan = str_squish(Label_Perubahan),
+    Keterangan = ifelse(Perubahan > 0, "Naik", 
+                        ifelse(Perubahan < 0, "Turun", "Tetap"))
   )
+
+data_absolut <- data_absolut |>
+  pivot_longer(
+    cols = c(September, Oktober),
+    names_to = "Bulan",
+    values_to = "Nilai"
+  )
+
+data_absolut$Bulan <- factor(data_absolut$Bulan, levels = c("September", "Oktober"))
+
+
+ggplot(data = data_absolut, aes(x = Bulan, y = Nilai, group = Indikator, fill=Keterangan)) +
+  geom_line(aes(color = Keterangan), size = 2) +
+  geom_point(aes(color = Keterangan, alpha = 1), size = 4) +
+  geom_text_repel(data = data_absolut %>% filter(Bulan == "September"), 
+                  aes(label = paste0(Indikator, " - ", format(Nilai, big.mark = ".", scientific = FALSE))) , 
+                  hjust = 1.35, 
+                  fontface = "bold", 
+                  size = 3.5, color = "black") +
+  geom_text_repel(data = data_absolut %>% filter(Bulan == "Oktober"), 
+                  aes(label = paste0(Indikator, " - ", format(Nilai, big.mark = ".", scientific = FALSE), " (", Label_Perubahan, ")")) , 
+                  hjust = -.35, 
+                  fontface = "bold", 
+                  size = 3.5, color = "black") +
+  geom_vline(xintercept = 1, linetype="dashed", size=.1, color = "white") + 
+  geom_vline(xintercept=2, linetype="dashed", size=.1, color="white") +
+  scale_color_manual(labels = c("Naik", "Tetap", "Turun"), 
+                     values = c("Naik"="#ecd76a", "Tetap"="#696969", "Turun"="#5dabdc")) +
+  geom_text(label="September", x=1, y=1.1*36000, hjust=1.2, size=5, color="black") +  # title
+  geom_text(label="Oktober", x=2, y=1.1*36000, hjust=-0.1, size=5, color="black") +
+  ylim(0, 40000) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        panel.grid.major.x = element_blank(), panel.grid.minor.x  = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(color = "white"),
+        axis.ticks = element_blank(), #
+        #plot.title = element_markdown(size=14, face = "bold", hjust = 0.5, color = "white"),
+        #plot.subtitle =  element_markdown(hjust = 0.5, color = "white"),
+        ##plot.caption = element_text(color="white"),
+        #plot.background = element_rect("black"),
+        #panel.background = element_rect(fill = "black", color  =  NA),
+        axis.text.x = element_blank()
+  ) 
+
+ggsave("I:/Datin/durasi_medsos.png", dpi = 320, width = 11.5, height = 5)
+
+##
+data_persen <- data_raw %>% filter(Jenis == "Persentase")
+
+data_persen <- data_persen %>%
+  mutate(
+    Perubahan = Oktober - September,
+    Label_Perubahan = ifelse(Perubahan > 0, paste0("+", gsub("\\.", ",", round(Perubahan,2))), 
+                             ifelse(Perubahan < 0, gsub("\\.", ",", round(Perubahan,2)), "0")),
+    Label_Perubahan = paste0(str_squish(Label_Perubahan), "%"),
+    Keterangan = ifelse(Perubahan > 0, "Naik", 
+                        ifelse(Perubahan < 0, "Turun", "Tetap"))
+  )
+
+data_persen <- data_persen |>
+  pivot_longer(
+    cols = c(September, Oktober),
+    names_to = "Bulan",
+    values_to = "Nilai"
+  )
+
+data_persen$Bulan <- factor(data_persen$Bulan, levels = c("September", "Oktober"))
+
+ggplot(data = data_persen, aes(x = Bulan, y = Nilai, group = Indikator, fill=Keterangan)) +
+  geom_line(aes(color = Keterangan), size = 2) +
+  geom_point(aes(color = Keterangan, alpha = 1), size = 4) +
+  geom_text_repel(data = data_persen %>% filter(Bulan == "September"), 
+                  aes(label = paste0(Indikator, ": ", gsub("\\.", ",", round(Nilai,2)))) , 
+                  hjust = 1.35, 
+                  fontface = "bold", 
+                  size = 4, color = "black") +
+  geom_text_repel(data = data_persen %>% filter(Bulan == "Oktober"), 
+                  aes(label = paste0(Indikator, ": ", gsub("\\.", ",", round(Nilai,2)), " (", Label_Perubahan, ")")) , 
+                  hjust = -.35, 
+                  fontface = "bold", 
+                  size = 4, color = "black") +
+  geom_vline(xintercept = 1, linetype="dashed", size=.1, color = "white") + 
+  geom_vline(xintercept=2, linetype="dashed", size=.1, color="white") +
+  scale_color_manual(labels = c("Naik", "Tetap", "Turun"), 
+                     values = c("Naik"="#ecd76a", "Tetap"="#696969", "Turun"="#5dabdc")) +
+  geom_text(label="September", x=1, y=85, hjust=1.2, size=5, color="black") +  # title
+  geom_text(label="Oktober", x=2, y=85, hjust=-0.1, size=5, color="black") +
+  ylim(40, 90) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        panel.grid.major.x = element_blank(), panel.grid.minor.x  = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(color = "white"),
+        axis.ticks = element_blank(), #
+        #plot.title = element_markdown(size=14, face = "bold", hjust = 0.5, color = "white"),
+        #plot.subtitle =  element_markdown(hjust = 0.5, color = "white"),
+        ##plot.caption = element_text(color="white"),
+        #plot.background = element_rect("black"),
+        #panel.background = element_rect(fill = "black", color  =  NA),
+        axis.text.x = element_blank()
+  ) 
+
+ggsave("I:/Datin/persen.png", dpi = 320, width = 11.5, height = 5)
