@@ -413,10 +413,21 @@ ui <- page_navbar(
     icon = icon("chart-line"),
     layout_sidebar(
       sidebar = sidebar(
-        selectInput("pilih_kab_sipacoai", "Daftar Kabupaten",
-                    choices = c("SEMUA KABUPATEN")),
-        selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN"),
-        selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL"),
+        radioButtons("jenis_wilayah", "Pilih Wilayah:",
+                    choices = c("Lokus SIPACOAI" = "lokus", "Pilih Manual" = "manual")),
+        conditionalPanel(
+          condition = "input.jenis_wilayah == 'manual'",
+          selectInput("pilih_kab_sipacoai", "Daftar Kabupaten",
+                      choices = c("SEMUA KABUPATEN"))
+        ),
+        conditionalPanel(
+          condition = "input.jenis_wilayah == 'manual'",
+          selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN")
+        ),
+        conditionalPanel(
+          condition = "input.jenis_wilayah == 'manual'",    
+          selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL")
+        ),
         selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:10], selected = "OKTOBER"),
         input_task_button(
           label_busy = "Sedang Proses",
@@ -2348,7 +2359,9 @@ server <- function(input, output, session) {
   
   # Jika ingin lebih reaktif dan modular
   value_filter_kab_sipacoai <- eventReactive(input$cari_sipacoai, {
-    if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
+    if (input$jenis_wilayah == "lokus") {
+      c("MAMASA", "MAMUJU", "MAJENE", "POLEWALI MANDAR")
+    } else if (input$jenis_wilayah != "lokus" & input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
       unique(data_nama_desa$KABUPATEN)
     } else {
       input$pilih_kab_sipacoai
@@ -2357,7 +2370,9 @@ server <- function(input, output, session) {
   
   value_filter_kec_sipacoai <- eventReactive(input$cari_sipacoai, {
     req(value_filter_kab_sipacoai())
-    if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
+    if (input$jenis_wilayah == "lokus") {
+      c("MAMASA", "SIMBORO", "TOMMO", "MALUNDA", "SENDANA", "POLEWALI", "ANREAPI")
+    } else if (input$jenis_wilayah != "lokus" & input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
       unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai()])
     } else {
       input$pilih_kec_sipacoai
@@ -2366,7 +2381,9 @@ server <- function(input, output, session) {
   
   value_filter_desa_kel_sipacoai <- eventReactive(input$cari_sipacoai, {
     req(value_filter_kab_sipacoai(), value_filter_kec_sipacoai())
-    if (input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
+    if (input$jenis_wilayah == "lokus") {
+      c("OSANGO", "RANGAS", "LELING", "LOMBONG TIMUR", "BUKIT SAMANG", "TAKATIDUNG", "KUNYI")
+    } else if (input$jenis_wilayah != "lokus" & input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
       unique(data_nama_desa$KELURAHAN[
         data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai() & 
           data_nama_desa$KECAMATAN %in% value_filter_kec_sipacoai()
@@ -2392,7 +2409,10 @@ server <- function(input, output, session) {
   # })
   
   teks_judul_rekap_sipacoai <- eventReactive(input$cari_sipacoai, {
-    if(input$pilih_kab_sipacoai == "SEMUA KABUPATEN"){
+    if(input$jenis_wilayah == "lokus") {
+      nama_daerah = "LOKUS"
+      tingkat_daerah = "SIPACOAI"
+    } else if(input$pilih_kab_sipacoai == "SEMUA KABUPATEN"){
       nama_daerah = "SULAWESI BARAT"
       tingkat_daerah = "PROVINSI"
     } else if(input$pilih_kec_sipacoai == "SEMUA KECAMATAN"){

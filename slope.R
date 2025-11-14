@@ -2,12 +2,13 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(ggrepel)
+library(stringr)
 
 # Data asli dari gambar
 data_raw <- data.frame(
   Indikator = c(
     "Pendampingan Keluarga",
-    "Sasaran Hadir Posyandu",
+    "Kehadiran Posyandu",
     "Perkembangan Anak",
     "Genting",
     "Tamasya",
@@ -17,15 +18,15 @@ data_raw <- data.frame(
     "Ayah Teladan (GATI)",
     "Peserta KB Aktif"
   ),
-  September = c(59.33, 76.79, 33238, 6487, 37, 54.57, 2820, 15025, 11554, 35127),
-  Oktober = c(57.68, 79.96, 35749, 6487, 37, 68.7, 4504, 15900, 21544, 34581)
+  September = c(64.05, 43.12, 130, 26,1, 64.52, 0, 25, 77, 160),
+  Oktober = c(64.35, 49.07, 155, 26, 1, 70.97, 9, 25, 172, 159)
 )
 
 # Tambahkan kolom jenis data
 data_raw <- data_raw %>%
   mutate(
     Jenis = case_when(
-      Indikator %in% c("Pendampingan Keluarga", "Sasaran Hadir Posyandu", 
+      Indikator %in% c("Pendampingan Keluarga", "Kehadiran Posyandu", 
                        "Edukasi KBPP") ~ "Persentase",
       TRUE ~ "Absolut"
     )
@@ -73,9 +74,9 @@ ggplot(data = data_absolut, aes(x = Bulan, y = Nilai, group = Indikator, fill=Ke
   geom_vline(xintercept=2, linetype="dashed", size=.1, color="white") +
   scale_color_manual(labels = c("Naik", "Tetap", "Turun"), 
                      values = c("Naik"="#ecd76a", "Tetap"="#696969", "Turun"="#5dabdc")) +
-  geom_text(label="September", x=1, y=1.1*36000, hjust=1.2, size=5, color="black") +  # title
-  geom_text(label="Oktober", x=2, y=1.1*36000, hjust=-0.1, size=5, color="black") +
-  ylim(0, 40000) +
+  geom_text(label="September", x=1, y=1.1*200, hjust=1.2, size=5, color="black") +  # title
+  geom_text(label="Oktober", x=2, y=1.1*200, hjust=-0.1, size=5, color="black") +
+  ylim(0, 230) +
   theme_minimal() +
   theme(legend.position = "none", 
         panel.grid.major.x = element_blank(), panel.grid.minor.x  = element_blank(),
