@@ -34,7 +34,7 @@ ui <- page_navbar(
       ),
       column(3, selectInput("pilih_kec", "Daftar Kecamatan", choices = c("SEMUA KECAMATAN"))),
       column(3, selectInput("pilih_desa_kel", "Pilih Desa/Kel", choices = c("SEMUA DESA/KEL"))),
-      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:10], selected = "OKTOBER"))
+      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:11], selected = "OKTOBER"))
     ),
     br(
       

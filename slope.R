@@ -18,8 +18,8 @@ data_raw <- data.frame(
     "Ayah Teladan (GATI)",
     "Peserta KB Aktif"
   ),
-  September = c(64.05, 43.12, 130, 26,1, 64.52, 0, 25, 77, 160),
-  Oktober = c(64.35, 49.07, 155, 26, 1, 70.97, 9, 25, 172, 159)
+  September = c(64.07, 78.48, 541, 163,2, 94.42, 56, 178, 251, 758),
+  Oktober = c(62.34, 83.28, 632, 163, 2, 95.43, 73, 170, 825, 749)
 )
 
 # Tambahkan kolom jenis data
@@ -74,9 +74,9 @@ ggplot(data = data_absolut, aes(x = Bulan, y = Nilai, group = Indikator, fill=Ke
   geom_vline(xintercept=2, linetype="dashed", size=.1, color="white") +
   scale_color_manual(labels = c("Naik", "Tetap", "Turun"), 
                      values = c("Naik"="#ecd76a", "Tetap"="#696969", "Turun"="#5dabdc")) +
-  geom_text(label="September", x=1, y=1.1*200, hjust=1.2, size=5, color="black") +  # title
-  geom_text(label="Oktober", x=2, y=1.1*200, hjust=-0.1, size=5, color="black") +
-  ylim(0, 230) +
+  geom_text(label="September", x=1, y=890, hjust=1.2, size=5, color="black") +  # title
+  geom_text(label="Oktober", x=2, y=890, hjust=-0.1, size=5, color="black") +
+  ylim(0, 900) +
   theme_minimal() +
   theme(legend.position = "none", 
         panel.grid.major.x = element_blank(), panel.grid.minor.x  = element_blank(),
@@ -132,9 +132,9 @@ ggplot(data = data_persen, aes(x = Bulan, y = Nilai, group = Indikator, fill=Ket
   geom_vline(xintercept=2, linetype="dashed", size=.1, color="white") +
   scale_color_manual(labels = c("Naik", "Tetap", "Turun"), 
                      values = c("Naik"="#ecd76a", "Tetap"="#696969", "Turun"="#5dabdc")) +
-  geom_text(label="September", x=1, y=85, hjust=1.2, size=5, color="black") +  # title
-  geom_text(label="Oktober", x=2, y=85, hjust=-0.1, size=5, color="black") +
-  ylim(40, 90) +
+  geom_text(label="September", x=1, y=100, hjust=1.2, size=5, color="black") +  # title
+  geom_text(label="Oktober", x=2, y=100, hjust=-0.1, size=5, color="black") +
+  ylim(55, 100) +
   theme_minimal() +
   theme(legend.position = "none", 
         panel.grid.major.x = element_blank(), panel.grid.minor.x  = element_blank(),
