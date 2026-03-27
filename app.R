@@ -34,7 +34,7 @@ ui <- page_navbar(
       ),
       column(3, selectInput("pilih_kec", "Daftar Kecamatan", choices = c("SEMUA KECAMATAN"))),
       column(3, selectInput("pilih_desa_kel", "Pilih Desa/Kel", choices = c("SEMUA DESA/KEL"))),
-      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:11], selected = "NOVEMBER"))
+      column(3, selectInput("pilih_bulan", "Pilih Bulan", choices = daftar_bulan[1:2], selected = "NOVEMBER"))
     ),
     br(
       
@@ -408,196 +408,196 @@ ui <- page_navbar(
   ),
   
   # Page 2 - Analisis
-  nav_panel(
-    title = "SIPACOAI",
-    icon = icon("chart-line"),
-    layout_sidebar(
-      sidebar = sidebar(
-        radioButtons("jenis_wilayah", "Pilih Wilayah:",
-                    choices = c("Lokus SIPACOAI" = "lokus", "Pilih Manual" = "manual")),
-        conditionalPanel(
-          condition = "input.jenis_wilayah == 'manual'",
-          selectInput("pilih_kab_sipacoai", "Daftar Kabupaten",
-                      choices = c("SEMUA KABUPATEN"))
-        ),
-        conditionalPanel(
-          condition = "input.jenis_wilayah == 'manual'",
-          selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN")
-        ),
-        conditionalPanel(
-          condition = "input.jenis_wilayah == 'manual'",    
-          selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL")
-        ),
-        selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:10], selected = "OKTOBER"),
-        input_task_button(
-          label_busy = "Sedang Proses",
-          id = "cari_sipacoai",
-          label = "Cari"
-        )
-      ),
-      h5(textOutput("tes_input_rekap_sipacoai"), style="text-align: center;"),
-      # Baris pertama value boxes
-      layout_column_wrap(
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Keluarga Mendapat Pendampingan",
-            value = textOutput("jumlah_pendampingan_keluarga"),
-            showcase = bsicons::bs_icon("house-heart"),
-            showcase_layout = "top right",
-            theme = "warning",
-            p("Edukasi, Fasilitasi Bantuan & Rujukan"),
-            textOutput("status_jumlah_pendampingan_keluarga")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Sasaran Hadir Posyandu", 
-            value = textOutput("ds"),
-            showcase = bsicons::bs_icon("person-hearts"),
-            showcase_layout = "top right",
-            theme = "primary",
-            p("Bumil dan Baduta"),
-            textOutput("status_ds")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Perkembangan Anak",
-            value = textOutput("jumlah_penggunaan_kka"),
-            showcase = bsicons::bs_icon("people"),
-            showcase_layout = "top right", 
-            theme = "warning",
-            p("Jumlah Balita Dipantau dengan KKA"),
-            textOutput("status_jumlah_penggunaan_kka")
-          )
-        )
-      ),
-      
-      # Baris kedua value boxes
-      layout_column_wrap(
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Genting",
-            value = textOutput("genting"),
-            showcase = fa_icon("baby"),
-            showcase_layout = "top right",
-            theme = "primary",
-            p("Gerakan Orang Tua Asuh Cegah Stunting"),
-            textOutput("status_genting")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Tamasya", 
-            value = textOutput("tamasya"),
-            showcase = bsicons::bs_icon("emoji-smile"),
-            showcase_layout = "top right",
-            theme = "warning",
-            p("Jumlah Taman Asuh Sayang Anak"),
-            textOutput("status_tamasya")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Edukasi KBPP",
-            value = textOutput("jumlah_edukasi_kbpp"),
-            showcase = bsicons::bs_icon("person-plus"),
-            showcase_layout = "top right",
-            theme = "primary",
-            p("Ibu Hamil dan Pascasalin"),
-            textOutput("status_jumlah_edukasi_kbpp")
-          )
-        )
-      ),
-      
-      # Baris ketiga value boxes
-      layout_column_wrap(
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Lansia (SIDAYA)",
-            value = textOutput("jumlah_sidaya_sipacoai"),
-            showcase = bsicons::bs_icon("person-walking"),
-            showcase_layout = "top right",
-            theme = "warning",
-            p("Mendapatkan Pemeriksaan Kesehatan"),
-            textOutput("status_jumlah_sidaya_sipacoai")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Remaja (PIK-R)",
-            value = textOutput("jumlah_pikr_sipacoai"),
-            showcase = bsicons::bs_icon("people"),
-            showcase_layout = "top right",
-            theme = "primary",
-            p("Jumlah Remaja Hadir Pertemuan PIK-R"),
-            textOutput("status_jumlah_pikr_sipacoai")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Ayah Teladan (GATI)",
-            value = textOutput("jumlah_gati_sipacoai"), 
-            showcase = bsicons::bs_icon("person-arms-up"),
-            showcase_layout = "top right",
-            theme = "primary",
-            p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi"),
-            textOutput("status_jumlah_gati_sipacoai")
-          )
-        ),
-        tags$a(
-          href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel11",
-          target = "_blank",
-          style = "text-decoration: none; color: inherit;",
-          value_box(
-            title = "Peserta KB Aktif",
-            value = textOutput("jumlah_mkjp_sipacoai"),
-            showcase = bsicons::bs_icon("person-plus"),
-            showcase_layout = "top right", 
-            theme = "warning",
-            p("Akseptor KB MKJP"),
-            textOutput("status_jumlah_mkjp_sipacoai")
-          )
-        )
-      ),
-      # Versi yang lebih ringkas
-      p("Silakan klik tombol di bawah ini untuk mengakses halaman Data BNBA Kemendukbangga/BKKBN:"),
-      tags$a(
-        "Akses Rekapitulasi Data BKKBN",
-        href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
-        target = "_blank",
-        class = "btn btn-primary btn-lg",
-        style = "margin-top: 15px; margin-bottom: 15px;"
-      )
-    )
-  )
+  # nav_panel(
+  #   title = "SIPACOAI",
+  #   icon = icon("chart-line"),
+  #   layout_sidebar(
+  #     sidebar = sidebar(
+  #       radioButtons("jenis_wilayah", "Pilih Wilayah:",
+  #                   choices = c("Lokus SIPACOAI" = "lokus", "Pilih Manual" = "manual")),
+  #       conditionalPanel(
+  #         condition = "input.jenis_wilayah == 'manual'",
+  #         selectInput("pilih_kab_sipacoai", "Daftar Kabupaten",
+  #                     choices = c("SEMUA KABUPATEN"))
+  #       ),
+  #       conditionalPanel(
+  #         condition = "input.jenis_wilayah == 'manual'",
+  #         selectInput("pilih_kec_sipacoai", "Daftar Kecamatan", choices = "SEMUA KECAMATAN")
+  #       ),
+  #       conditionalPanel(
+  #         condition = "input.jenis_wilayah == 'manual'",    
+  #         selectInput("pilih_desa_kel_sipacoai", "Pilih Desa/Kel", choices = "SEMUA DESA/KEL")
+  #       ),
+  #       selectInput("pilih_bulan_sipacoai", "Pilih Bulan", choices = daftar_bulan[9:10], selected = "OKTOBER"),
+  #       input_task_button(
+  #         label_busy = "Sedang Proses",
+  #         id = "cari_sipacoai",
+  #         label = "Cari"
+  #       )
+  #     ),
+  #     h5(textOutput("tes_input_rekap_sipacoai"), style="text-align: center;"),
+  #     # Baris pertama value boxes
+  #     layout_column_wrap(
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Keluarga Mendapat Pendampingan",
+  #           value = textOutput("jumlah_pendampingan_keluarga"),
+  #           showcase = bsicons::bs_icon("house-heart"),
+  #           showcase_layout = "top right",
+  #           theme = "warning",
+  #           p("Edukasi, Fasilitasi Bantuan & Rujukan"),
+  #           textOutput("status_jumlah_pendampingan_keluarga")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Sasaran Hadir Posyandu", 
+  #           value = textOutput("ds"),
+  #           showcase = bsicons::bs_icon("person-hearts"),
+  #           showcase_layout = "top right",
+  #           theme = "primary",
+  #           p("Bumil dan Baduta"),
+  #           textOutput("status_ds")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel16",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Perkembangan Anak",
+  #           value = textOutput("jumlah_penggunaan_kka"),
+  #           showcase = bsicons::bs_icon("people"),
+  #           showcase_layout = "top right", 
+  #           theme = "warning",
+  #           p("Jumlah Balita Dipantau dengan KKA"),
+  #           textOutput("status_jumlah_penggunaan_kka")
+  #         )
+  #       )
+  #     ),
+  #     
+  #     # Baris kedua value boxes
+  #     layout_column_wrap(
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Genting",
+  #           value = textOutput("genting"),
+  #           showcase = fa_icon("baby"),
+  #           showcase_layout = "top right",
+  #           theme = "primary",
+  #           p("Gerakan Orang Tua Asuh Cegah Stunting"),
+  #           textOutput("status_genting")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Tamasya", 
+  #           value = textOutput("tamasya"),
+  #           showcase = bsicons::bs_icon("emoji-smile"),
+  #           showcase_layout = "top right",
+  #           theme = "warning",
+  #           p("Jumlah Taman Asuh Sayang Anak"),
+  #           textOutput("status_tamasya")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Edukasi KBPP",
+  #           value = textOutput("jumlah_edukasi_kbpp"),
+  #           showcase = bsicons::bs_icon("person-plus"),
+  #           showcase_layout = "top right",
+  #           theme = "primary",
+  #           p("Ibu Hamil dan Pascasalin"),
+  #           textOutput("status_jumlah_edukasi_kbpp")
+  #         )
+  #       )
+  #     ),
+  #     
+  #     # Baris ketiga value boxes
+  #     layout_column_wrap(
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Lansia (SIDAYA)",
+  #           value = textOutput("jumlah_sidaya_sipacoai"),
+  #           showcase = bsicons::bs_icon("person-walking"),
+  #           showcase_layout = "top right",
+  #           theme = "warning",
+  #           p("Mendapatkan Pemeriksaan Kesehatan"),
+  #           textOutput("status_jumlah_sidaya_sipacoai")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Remaja (PIK-R)",
+  #           value = textOutput("jumlah_pikr_sipacoai"),
+  #           showcase = bsicons::bs_icon("people"),
+  #           showcase_layout = "top right",
+  #           theme = "primary",
+  #           p("Jumlah Remaja Hadir Pertemuan PIK-R"),
+  #           textOutput("status_jumlah_pikr_sipacoai")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Ayah Teladan (GATI)",
+  #           value = textOutput("jumlah_gati_sipacoai"), 
+  #           showcase = bsicons::bs_icon("person-arms-up"),
+  #           showcase_layout = "top right",
+  #           theme = "primary",
+  #           p("Calon Ayah, Ayah dan Remaja yang Mendapatkan Edukasi"),
+  #           textOutput("status_jumlah_gati_sipacoai")
+  #         )
+  #       ),
+  #       tags$a(
+  #         href = "https://newsiga-siga.bkkbn.go.id/#/TabulasiSIGA/dallapDetail/Dallap-Bulanan/Tabel11",
+  #         target = "_blank",
+  #         style = "text-decoration: none; color: inherit;",
+  #         value_box(
+  #           title = "Peserta KB Aktif",
+  #           value = textOutput("jumlah_mkjp_sipacoai"),
+  #           showcase = bsicons::bs_icon("person-plus"),
+  #           showcase_layout = "top right", 
+  #           theme = "warning",
+  #           p("Akseptor KB MKJP"),
+  #           textOutput("status_jumlah_mkjp_sipacoai")
+  #         )
+  #       )
+  #     ),
+  #     # Versi yang lebih ringkas
+  #     p("Silakan klik tombol di bawah ini untuk mengakses halaman Data BNBA Kemendukbangga/BKKBN:"),
+  #     tags$a(
+  #       "Akses Rekapitulasi Data BKKBN",
+  #       href = "https://newsiga-siga.bkkbn.go.id/#/form/rekapitulasi",
+  #       target = "_blank",
+  #       class = "btn btn-primary btn-lg",
+  #       style = "margin-top: 15px; margin-bottom: 15px;"
+  #     )
+  #   )
+  # )
 )
 
 # Server
@@ -2092,7 +2092,7 @@ server <- function(input, output, session) {
       gt() |>
       tab_header(
         title = "Data Laporan Kelompok Kegiatan/Setara",
-        subtitle = paste("New SIGA - ", value_filter_bulan(), " 2025")
+        subtitle = paste("New SIGA - ", value_filter_bulan(), " 2026")
       ) |>
       cols_align(
         align = "center",
@@ -2185,1364 +2185,1366 @@ server <- function(input, output, session) {
   })
   ##
   
-  # SIPACOAI
-  # gu input
-  
-  # Fungsi untuk mendapatkan bulan sebelumnya
-  get_bulan_sebelumnya <- function(bulan_dipilih) {
-    # Cek jika bulan yang dipilih adalah "JANUARI"
-    if (toupper(bulan_dipilih) == "JANUARI") {
-      return("Tidak ada bulan sebelumnya dalam daftar ini (DECEMBER akan dianggap sebagai bulan sebelumnya)")
-    }
-    
-    # Temukan indeks dari bulan yang dipilih
-    indeks_bulan_dipilih <- match(toupper(bulan_dipilih), daftar_bulan)
-    
-    # Cek jika bulan yang dipilih valid
-    if (is.na(indeks_bulan_dipilih)) {
-      return("Bulan tidak ditemukan dalam daftar.")
-    }
-    
-    # Dapatkan indeks bulan sebelumnya (indeks - 1)
-    indeks_bulan_sebelumnya <- indeks_bulan_dipilih - 1
-    
-    # Ambil nama bulan sebelumnya dari vektor
-    bulan_sebelumnya <- daftar_bulan[indeks_bulan_sebelumnya]
-    
-    return(bulan_sebelumnya)
-  }
-  
-  # Initialize kabupaten choices saat app dimulai
-  observe({
-    choices <- processed_data()$kabupaten_choices
-    updateSelectInput(
-      session, 
-      "pilih_kab_sipacoai",
-      choices = c("SEMUA KABUPATEN", setNames(choices, choices))
-    )
-  })
-  
-  # Update kecamatan choices berdasarkan kabupaten yang dipilih
-  observeEvent(input$pilih_kab_sipacoai, {
-    if (input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
-      # Filter data berdasarkan kabupaten
-      filtered_data <- processed_data()$data_by_kabupaten[[input$pilih_kab_sipacoai]]
-      kecamatan_choices <- sort(unique(filtered_data$KECAMATAN))
-      
-      updateSelectInput(
-        session,
-        "pilih_kec_sipacoai",
-        choices = c("SEMUA KECAMATAN", setNames(kecamatan_choices, kecamatan_choices))
-      )
-    } else {
-      # Reset kecamatan dan desa jika kabupaten tidak dipilih
-      updateSelectInput(session, "pilih_kec_sipacoai", choices = c("SEMUA KECAMATAN"))
-      updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
-    }
-  })
-  
-  # Update desa choices berdasarkan kecamatan yang dipilih
-  observeEvent(input$pilih_kec_sipacoai, {
-    if (input$pilih_kec_sipacoai != "SEMUA KECAMATAN" && input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
-      # Filter data berdasarkan kabupaten dan kecamatan
-      filtered_data <- data_nama_desa |>
-        fsubset(KABUPATEN == input$pilih_kab_sipacoai & KECAMATAN == input$pilih_kec_sipacoai)
-      
-      desa_choices <- sort(unique(filtered_data$KELURAHAN))
-      
-      updateSelectInput(
-        session,
-        "pilih_desa_kel_sipacoai",
-        choices = c("SEMUA DESA/KEL", setNames(desa_choices, desa_choices))
-      )
-    } else {
-      # Reset desa jika kecamatan tidak dipilih
-      updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
-    }
-  })
-  
+  # # SIPACOAI
+  # # gu input
+  # 
+  # # Fungsi untuk mendapatkan bulan sebelumnya
+  # get_bulan_sebelumnya <- function(bulan_dipilih) {
+  #   # Cek jika bulan yang dipilih adalah "JANUARI"
+  #   if (toupper(bulan_dipilih) == "JANUARI") {
+  #     return("Tidak ada bulan sebelumnya dalam daftar ini (DECEMBER akan dianggap sebagai bulan sebelumnya)")
+  #   }
+  #   
+  #   # Temukan indeks dari bulan yang dipilih
+  #   indeks_bulan_dipilih <- match(toupper(bulan_dipilih), daftar_bulan)
+  #   
+  #   # Cek jika bulan yang dipilih valid
+  #   if (is.na(indeks_bulan_dipilih)) {
+  #     return("Bulan tidak ditemukan dalam daftar.")
+  #   }
+  #   
+  #   # Dapatkan indeks bulan sebelumnya (indeks - 1)
+  #   indeks_bulan_sebelumnya <- indeks_bulan_dipilih - 1
+  #   
+  #   # Ambil nama bulan sebelumnya dari vektor
+  #   bulan_sebelumnya <- daftar_bulan[indeks_bulan_sebelumnya]
+  #   
+  #   return(bulan_sebelumnya)
+  # }
+  # 
+  # # Initialize kabupaten choices saat app dimulai
+  # observe({
+  #   choices <- processed_data()$kabupaten_choices
+  #   updateSelectInput(
+  #     session, 
+  #     "pilih_kab_sipacoai",
+  #     choices = c("SEMUA KABUPATEN", setNames(choices, choices))
+  #   )
+  # })
+  # 
+  # # Update kecamatan choices berdasarkan kabupaten yang dipilih
   # observeEvent(input$pilih_kab_sipacoai, {
-  #   if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
-  #     updateSelectInput(session, "pilih_kec_sipacoai",
-  #                       choices = c("SEMUA KECAMATAN"))
+  #   if (input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
+  #     # Filter data berdasarkan kabupaten
+  #     filtered_data <- processed_data()$data_by_kabupaten[[input$pilih_kab_sipacoai]]
+  #     kecamatan_choices <- sort(unique(filtered_data$KECAMATAN))
+  #     
+  #     updateSelectInput(
+  #       session,
+  #       "pilih_kec_sipacoai",
+  #       choices = c("SEMUA KECAMATAN", setNames(kecamatan_choices, kecamatan_choices))
+  #     )
   #   } else {
-  #     daftar_kecamatan = data_nama_desa |>
-  #       fselect(KABUPATEN, KECAMATAN) |>
-  #       fsubset(KABUPATEN == input$pilih_kab_sipacoai) |>
-  #       fselect(KECAMATAN)
-  #     daftar_kecamatan = daftar_kecamatan$KECAMATAN
-  #     updateSelectInput(session, "pilih_kec_sipacoai",
-  #                       choices = c("SEMUA KECAMATAN",
-  #                                   daftar_kecamatan))
+  #     # Reset kecamatan dan desa jika kabupaten tidak dipilih
+  #     updateSelectInput(session, "pilih_kec_sipacoai", choices = c("SEMUA KECAMATAN"))
+  #     updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
   #   }
   # })
   # 
+  # # Update desa choices berdasarkan kecamatan yang dipilih
   # observeEvent(input$pilih_kec_sipacoai, {
-  #   if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
-  #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
-  #                       choices = c("SEMUA DESA/KEL"))
+  #   if (input$pilih_kec_sipacoai != "SEMUA KECAMATAN" && input$pilih_kab_sipacoai != "SEMUA KABUPATEN") {
+  #     # Filter data berdasarkan kabupaten dan kecamatan
+  #     filtered_data <- data_nama_desa |>
+  #       fsubset(KABUPATEN == input$pilih_kab_sipacoai & KECAMATAN == input$pilih_kec_sipacoai)
+  #     
+  #     desa_choices <- sort(unique(filtered_data$KELURAHAN))
+  #     
+  #     updateSelectInput(
+  #       session,
+  #       "pilih_desa_kel_sipacoai",
+  #       choices = c("SEMUA DESA/KEL", setNames(desa_choices, desa_choices))
+  #     )
   #   } else {
-  #     daftar_kel = data_nama_desa |>
-  #       fselect(KECAMATAN, KELURAHAN) |>
-  #       fsubset(KECAMATAN == input$pilih_kec_sipacoai) |>
-  #       fselect(KELURAHAN)
-  #     daftar_kel = daftar_kel$KELURAHAN
-  #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
-  #                       choices = c("SEMUA DESA/KEL", 
-  #                                   daftar_kel))
+  #     # Reset desa jika kecamatan tidak dipilih
+  #     updateSelectInput(session, "pilih_desa_kel_sipacoai", choices = c("SEMUA DESA/KEL"))
   #   }
   # })
-  
-  ## batas gu input
-  
-  ## gu filter
-  # filter kab
-  # value_filter_kab_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
   # 
-  # observeEvent(input$cari_sipacoai, {
-  #   kondisi_input = input$pilih_kab_sipacoai
-  #   if (kondisi_input == "SEMUA KABUPATEN"){
-  #     filter_kabupaten = unique(data_nama_desa$KABUPATEN)
+  # # observeEvent(input$pilih_kab_sipacoai, {
+  # #   if (input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
+  # #     updateSelectInput(session, "pilih_kec_sipacoai",
+  # #                       choices = c("SEMUA KECAMATAN"))
+  # #   } else {
+  # #     daftar_kecamatan = data_nama_desa |>
+  # #       fselect(KABUPATEN, KECAMATAN) |>
+  # #       fsubset(KABUPATEN == input$pilih_kab_sipacoai) |>
+  # #       fselect(KECAMATAN)
+  # #     daftar_kecamatan = daftar_kecamatan$KECAMATAN
+  # #     updateSelectInput(session, "pilih_kec_sipacoai",
+  # #                       choices = c("SEMUA KECAMATAN",
+  # #                                   daftar_kecamatan))
+  # #   }
+  # # })
+  # # 
+  # # observeEvent(input$pilih_kec_sipacoai, {
+  # #   if (input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
+  # #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
+  # #                       choices = c("SEMUA DESA/KEL"))
+  # #   } else {
+  # #     daftar_kel = data_nama_desa |>
+  # #       fselect(KECAMATAN, KELURAHAN) |>
+  # #       fsubset(KECAMATAN == input$pilih_kec_sipacoai) |>
+  # #       fselect(KELURAHAN)
+  # #     daftar_kel = daftar_kel$KELURAHAN
+  # #     updateSelectInput(session, "pilih_desa_kel_sipacoai",
+  # #                       choices = c("SEMUA DESA/KEL", 
+  # #                                   daftar_kel))
+  # #   }
+  # # })
+  # 
+  # ## batas gu input
+  # 
+  # ## gu filter
+  # # filter kab
+  # # value_filter_kab_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # # 
+  # # observeEvent(input$cari_sipacoai, {
+  # #   kondisi_input = input$pilih_kab_sipacoai
+  # #   if (kondisi_input == "SEMUA KABUPATEN"){
+  # #     filter_kabupaten = unique(data_nama_desa$KABUPATEN)
+  # #   } else{
+  # #     filter_kabupaten = input$pilih_kab_sipacoai
+  # #   }
+  # #   value_filter_kab_sipacoai(filter_kabupaten) 
+  # # })
+  # # 
+  # # #kecamatan
+  # # value_filter_kec_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # # 
+  # # observeEvent(input$cari_sipacoai, {
+  # #   kondisi_input = input$pilih_kec_sipacoai
+  # #   filter_kabupaten = value_filter_kab_sipacoai()
+  # #   
+  # #   if (kondisi_input == "SEMUA KECAMATAN"){
+  # #     daftar_kecamatan = data_nama_desa |>
+  # #       fselect(KABUPATEN, KECAMATAN) |>
+  # #       fsubset(KABUPATEN %in% filter_kabupaten) |>
+  # #       fselect(KECAMATAN)
+  # #     filter_kecamatan = daftar_kecamatan$KECAMATAN
+  # #   } else{
+  # #     filter_kecamatan = input$pilih_kec_sipacoai
+  # #   }
+  # #   value_filter_kec_sipacoai(filter_kecamatan) 
+  # # })
+  # # 
+  # # # desa
+  # # value_filter_desa_kel_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # # 
+  # # observeEvent(input$cari_sipacoai, {
+  # #   kondisi_input = input$pilih_desa_kel_sipacoai
+  # #   filter_kabupaten = value_filter_kab_sipacoai()
+  # #   filter_kecamatan = value_filter_kec_sipacoai()
+  # #   
+  # #   if (kondisi_input == "SEMUA DESA/KEL"){
+  # #     daftar_kel = data_nama_desa |>
+  # #       fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
+  # #       fsubset(
+  # #         KABUPATEN %in% filter_kabupaten) |>
+  # #       fsubset(KECAMATAN %in% filter_kecamatan) |>
+  # #       fselect(KELURAHAN)
+  # #     filter_desa_kel = daftar_kel$KELURAHAN
+  # #   } else{
+  # #     filter_desa_kel = input$pilih_desa_kel_sipacoai
+  # #   }
+  # #   value_filter_desa_kel_sipacoai(filter_desa_kel) 
+  # # })
+  # 
+  # # bulan
+  # # value_filter_bulan_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  # # 
+  # # observeEvent(input$cari_sipacoai, {
+  # #   value_filter_bulan(input$pilih_bulan_sipacoai) 
+  # # })
+  # 
+  # # Jika ingin lebih reaktif dan modular
+  # value_filter_kab_sipacoai <- eventReactive(input$cari_sipacoai, {
+  #   if (input$jenis_wilayah == "lokus") {
+  #     c("MAMASA", "MAMUJU", "MAJENE", "POLEWALI MANDAR")
+  #   } else if (input$jenis_wilayah != "lokus" & input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
+  #     unique(data_nama_desa$KABUPATEN)
+  #   } else {
+  #     input$pilih_kab_sipacoai
+  #   }
+  # })
+  # 
+  # value_filter_kec_sipacoai <- eventReactive(input$cari_sipacoai, {
+  #   req(value_filter_kab_sipacoai())
+  #   if (input$jenis_wilayah == "lokus") {
+  #     c("MAMASA", "SIMBORO", "TOMMO", "MALUNDA", "SENDANA", "POLEWALI", "ANREAPI")
+  #   } else if (input$jenis_wilayah != "lokus" & input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
+  #     unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai()])
+  #   } else {
+  #     input$pilih_kec_sipacoai
+  #   }
+  # })
+  # 
+  # value_filter_desa_kel_sipacoai <- eventReactive(input$cari_sipacoai, {
+  #   req(value_filter_kab_sipacoai(), value_filter_kec_sipacoai())
+  #   if (input$jenis_wilayah == "lokus") {
+  #     c("OSANGO", "RANGAS", "LELING", "LOMBONG TIMUR", "BUKIT SAMANG", "TAKATIDUNG", "KUNYI")
+  #   } else if (input$jenis_wilayah != "lokus" & input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
+  #     unique(data_nama_desa$KELURAHAN[
+  #       data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai() & 
+  #         data_nama_desa$KECAMATAN %in% value_filter_kec_sipacoai()
+  #     ])
+  #   } else {
+  #     input$pilih_desa_kel_sipacoai
+  #   }
+  # })
+  # 
+  # value_filter_bulan_sipacoai <- eventReactive(input$cari_sipacoai, {
+  #   input$pilih_bulan_sipacoai
+  # })
+  # 
+  # 
+  # 
+  # ## batas gu filter
+  # 
+  # ## gu judul
+  # # values_sipacoai <- reactiveValues(default = 0)
+  # # 
+  # # observeEvent(input$cari_sipacoai,{
+  # #   values_sipacoai$default <- input$cari_sipacoai
+  # # })
+  # 
+  # teks_judul_rekap_sipacoai <- eventReactive(input$cari_sipacoai, {
+  #   if(input$jenis_wilayah == "lokus") {
+  #     nama_daerah = "LOKUS"
+  #     tingkat_daerah = "SIPACOAI"
+  #   } else if(input$pilih_kab_sipacoai == "SEMUA KABUPATEN"){
+  #     nama_daerah = "SULAWESI BARAT"
+  #     tingkat_daerah = "PROVINSI"
+  #   } else if(input$pilih_kec_sipacoai == "SEMUA KECAMATAN"){
+  #     nama_daerah = input$pilih_kab_sipacoai
+  #     tingkat_daerah = "KABUPATEN"
+  #   } else if(input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL"){
+  #     nama_daerah = input$pilih_kec_sipacoai
+  #     tingkat_daerah = "KECAMATAN"
   #   } else{
-  #     filter_kabupaten = input$pilih_kab_sipacoai
+  #     nama_daerah = value_filter_desa_kel_sipacoai()
+  #     tingkat_daerah = "DESA/KELURAHAN"
   #   }
-  #   value_filter_kab_sipacoai(filter_kabupaten) 
+  #   teks <- paste(tingkat_daerah, nama_daerah, "-", input$pilih_bulan_sipacoai)
+  #   # if(tingkat_daerah == "KELURAHAN"){
+  #   #   teks <- paste0("PROFIL DESA/", tingkat_daerah, " ", nama_daerah, " - ", input$bulan_rekap)
+  #   # } else{
+  #   #   teks <- paste("PROFIL", tingkat_daerah, nama_daerah, "-", input$bulan_rekap)
+  #   # }
   # })
   # 
-  # #kecamatan
-  # value_filter_kec_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  # 
-  # observeEvent(input$cari_sipacoai, {
-  #   kondisi_input = input$pilih_kec_sipacoai
-  #   filter_kabupaten = value_filter_kab_sipacoai()
+  # output$tes_input_rekap_sipacoai <- renderText({
   #   
-  #   if (kondisi_input == "SEMUA KECAMATAN"){
-  #     daftar_kecamatan = data_nama_desa |>
-  #       fselect(KABUPATEN, KECAMATAN) |>
-  #       fsubset(KABUPATEN %in% filter_kabupaten) |>
-  #       fselect(KECAMATAN)
-  #     filter_kecamatan = daftar_kecamatan$KECAMATAN
-  #   } else{
-  #     filter_kecamatan = input$pilih_kec_sipacoai
-  #   }
-  #   value_filter_kec_sipacoai(filter_kecamatan) 
+  #   teks = teks_judul_rekap_sipacoai()
+  #   
   # })
   # 
-  # # desa
-  # value_filter_desa_kel_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
-  # 
-  # observeEvent(input$cari_sipacoai, {
-  #   kondisi_input = input$pilih_desa_kel_sipacoai
-  #   filter_kabupaten = value_filter_kab_sipacoai()
-  #   filter_kecamatan = value_filter_kec_sipacoai()
+  # ## batas gu judul
+  # data_bkb_keluarga <- fread("data/data_bkb_keluarga.csv")
+  # output$jumlah_pendampingan_keluarga <- renderText({
+  #   # React to action button
+  #   req(input$cari_sipacoai)
   #   
-  #   if (kondisi_input == "SEMUA DESA/KEL"){
-  #     daftar_kel = data_nama_desa |>
-  #       fselect(KABUPATEN, KECAMATAN, KELURAHAN) |>
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   # --- Agregasi BKB ---
+  #   # Filter and aggregate BKB data
+  #   bkb_filtered <- fsubset(data_bkb_keluarga, 
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
+  #   
+  #   
+  #   # --- Agregasi BKR ---
+  #   # Note: Assuming data_bkr exists - you'll need to load it
+  #   bkr_filtered <- fsubset(data_bkr,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKR data
+  #   # bkr_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKR = 0
+  #   # )
+  #   
+  #   # --- Agregasi BKL ---
+  #   # Note: Assuming data_bkl exists - you'll need to load it
+  #   bkl_filtered <- fsubset(data_bkl,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKL data
+  #   # bkl_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKL = 0
+  #   # )
+  #   
+  #   # --- Agregasi PUS ---
+  #   # Note: Assuming data_pus exists - you'll need to load it
+  #   pus_filtered <- fsubset(data_pus,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
+  #   
+  #   pa_filtered <- fsubset(data_mix,
+  #                          KABUPATEN %in% filter_kabupaten &
+  #                            KECAMATAN %in% filter_kecamatan &
+  #                            KELURAHAN %in% filter_desa &
+  #                            BULAN %in% filter_bulan)
+  #   
+  #   pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
+  #   
+  #   pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
+  #   
+  #   # Format hasil sebagai persentase
+  #   hasil_persen <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
+  #   hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
+  #   
+  #   paste0(hasil_formatted, "%")
+  # 
+  # }) 
+  # 
+  # output$status_jumlah_pendampingan_keluarga <- renderText({
+  #   # React to action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   filter_bulan_sebelum <- "SEPTEMBER"
+  #   
+  #   # --- Agregasi BKB ---
+  #   # Filter and aggregate BKB data
+  #   bkb_filtered <- fsubset(data_bkb_keluarga, 
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
+  #   
+  #   
+  #   # --- Agregasi BKR ---
+  #   # Note: Assuming data_bkr exists - you'll need to load it
+  #   bkr_filtered <- fsubset(data_bkr,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKR data
+  #   # bkr_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKR = 0
+  #   # )
+  #   
+  #   # --- Agregasi BKL ---
+  #   # Note: Assuming data_bkl exists - you'll need to load it
+  #   bkl_filtered <- fsubset(data_bkl,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKL data
+  #   # bkl_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKL = 0
+  #   # )
+  #   
+  #   # --- Agregasi PUS ---
+  #   # Note: Assuming data_pus exists - you'll need to load it
+  #   pus_filtered <- fsubset(data_pus,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan)
+  #   
+  #   pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
+  #   
+  #   pa_filtered <- fsubset(data_mix,
+  #                          KABUPATEN %in% filter_kabupaten &
+  #                            KECAMATAN %in% filter_kecamatan &
+  #                            KELURAHAN %in% filter_desa &
+  #                            BULAN %in% filter_bulan)
+  #   
+  #   pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
+  #   
+  #   pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
+  #   
+  #   # Format hasil sebagai persentase
+  #   hasil_persen <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
+  #   #hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
+  #   #sebelum
+  #   
+  #   
+  #   #sesudah
+  #   # --- Agregasi BKB ---
+  #   # Filter and aggregate BKB data
+  #   bkb_filtered <- fsubset(data_bkb_keluarga, 
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan_sebelum)
+  #   
+  #   bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
+  #   
+  #   
+  #   # --- Agregasi BKR ---
+  #   # Note: Assuming data_bkr exists - you'll need to load it
+  #   bkr_filtered <- fsubset(data_bkr,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan_sebelum)
+  #   
+  #   bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKR data
+  #   # bkr_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKR = 0
+  #   # )
+  #   
+  #   # --- Agregasi BKL ---
+  #   # Note: Assuming data_bkl exists - you'll need to load it
+  #   bkl_filtered <- fsubset(data_bkl,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan_sebelum)
+  #   
+  #   bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
+  #     fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
+  #   
+  #   # For demonstration, creating dummy BKL data
+  #   # bkl_hadir <- data.frame(
+  #   #   PROVINSI = unique(bkb_hadir$PROVINSI),
+  #   #   Keluarga_Hadir_BKL = 0
+  #   # )
+  #   
+  #   # --- Agregasi PUS ---
+  #   # Note: Assuming data_pus exists - you'll need to load it
+  #   pus_filtered <- fsubset(data_pus,
+  #                           KABUPATEN %in% filter_kabupaten &
+  #                             KECAMATAN %in% filter_kecamatan &
+  #                             KELURAHAN %in% filter_desa &
+  #                             BULAN %in% filter_bulan_sebelum)
+  #   
+  #   pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
+  #   
+  #   pa_filtered <- fsubset(data_mix,
+  #                          KABUPATEN %in% filter_kabupaten &
+  #                            KECAMATAN %in% filter_kecamatan &
+  #                            KELURAHAN %in% filter_desa &
+  #                            BULAN %in% filter_bulan_sebelum)
+  #   
+  #   pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
+  #     fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
+  #   
+  #   pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
+  #   
+  #   # Format hasil sebagai persentase
+  #   hasil_persen_sesudah <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
+  #   #hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
+  #   #sesudah
+  #   selisih <- paste0(gsub("\\.", ",", format(hasil_persen_sesudah - hasil_persen, nsmall = 2)), "%")
+  #   
+  #   if (hasil_persen > hasil_persen_sesudah) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, "dari September")
+  #   } else if (hasil_persen < hasil_persen_sesudah) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  #   
+  #   #paste0(hasil_persen_sesudah, "%")
+  #   
+  # }) 
+  # 
+  # data_ds <- fread("data/data_ds.csv")
+  # output$ds <- renderText({
+  #   # React to action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   # Wrap dalam tryCatch untuk handle error
+  #   tryCatch({
+  #     filter_kabupaten <- value_filter_kab_sipacoai()
+  #     filter_kecamatan <- value_filter_kec_sipacoai() 
+  #     filter_desa <- value_filter_desa_kel_sipacoai()
+  #     filter_bulan <- input$pilih_bulan_sipacoai
+  #     
+  #     # --- Agregasi BKB ---
+  #     # Filter and aggregate BKB data
+  #     data_ds <- fsubset(data_ds, 
+  #                        KABUPATEN %in% filter_kabupaten &
+  #                          KECAMATAN %in% filter_kecamatan &
+  #                          KELURAHAN %in% filter_desa &
+  #                          BULAN %in% filter_bulan)
+  #     
+  #     data_ds <- fgroup_by(data_ds, PROVINSI) %>%
+  #       fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+  #     
+  #     # Handle NaN, NA, atau Inf - ubah jadi 0
+  #     if(nrow(data_ds) == 0 || is.na(data_ds$DS) || is.nan(data_ds$DS) || is.infinite(data_ds$DS)) {
+  #       hasil_formatted <- "0,00"
+  #     } else {
+  #       hasil_formatted <- gsub("\\.", ",", format(round(data_ds$DS, 2), nsmall = 2))
+  #     }
+  #     
+  #     paste0(hasil_formatted, "%")
+  #     
+  #   }, error = function(e) {
+  #     # Jika terjadi error, return 0%
+  #     return("0,00%")
+  #   })
+  # })
+  # 
+  # output$status_ds <- renderText({
+  #   # React to action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   # Wrap dalam tryCatch untuk handle error
+  #   tryCatch({
+  #     filter_kabupaten <- value_filter_kab_sipacoai()
+  #     filter_kecamatan <- value_filter_kec_sipacoai() 
+  #     filter_desa <- value_filter_desa_kel_sipacoai()
+  #     filter_bulan <- input$pilih_bulan_sipacoai
+  #     
+  #     # --- Agregasi data sebelum ---
+  #     data_ds_sebelum <- fsubset(data_ds, 
+  #                                KABUPATEN %in% filter_kabupaten &
+  #                                  KECAMATAN %in% filter_kecamatan &
+  #                                  KELURAHAN %in% filter_desa &
+  #                                  BULAN %in% "SEPTEMBER")
+  #     
+  #     data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
+  #       fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+  #     
+  #     # --- Agregasi data current ---
+  #     data_ds_current <- fsubset(data_ds, 
+  #                                KABUPATEN %in% filter_kabupaten &
+  #                                  KECAMATAN %in% filter_kecamatan &
+  #                                  KELURAHAN %in% filter_desa &
+  #                                  BULAN %in% filter_bulan)
+  #     
+  #     data_ds_current <- fgroup_by(data_ds_current, PROVINSI) %>%
+  #       fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
+  #     
+  #     # Handle NaN, NA, atau Inf untuk kedua dataset
+  #     if(nrow(data_ds_sebelum) == 0 || is.na(data_ds_sebelum$DS) || is.nan(data_ds_sebelum$DS) || is.infinite(data_ds_sebelum$DS)) {
+  #       data_ds_sebelum$DS <- 0
+  #     }
+  #     
+  #     if(nrow(data_ds_current) == 0 || is.na(data_ds_current$DS) || is.nan(data_ds_current$DS) || is.infinite(data_ds_current$DS)) {
+  #       data_ds_current$DS <- 0
+  #     }
+  #     
+  #     # Hitung selisih
+  #     selisih_value <- data_ds_current$DS - data_ds_sebelum$DS
+  #     
+  #     # Handle NaN/NA pada selisih
+  #     if(is.na(selisih_value) || is.nan(selisih_value) || is.infinite(selisih_value)) {
+  #       selisih_value <- 0
+  #     }
+  #     
+  #     selisih <- gsub("\\.", ",", format(round(selisih_value, 2), nsmall = 2))
+  #     
+  #     # Tentukan status berdasarkan perbandingan
+  #     if (data_ds_current$DS > data_ds_sebelum$DS) {
+  #       paste0("↑ NAIK ", selisih, "% dari September")
+  #     } else if (data_ds_current$DS < data_ds_sebelum$DS) {
+  #       paste0("↓ TURUN ", abs(as.numeric(gsub(",", ".", selisih))), "% dari September")
+  #     } else {
+  #       "Sama dengan Bulan September"
+  #     }
+  #     
+  #   }, error = function(e) {
+  #     # Jika terjadi error, return status default
+  #     return("Data tidak tersedia")
+  #   })
+  # })
+  # 
+  # # Reactive function untuk jumlah penggunaan KKA
+  # output$jumlah_penggunaan_kka <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_bkb_keluarga |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
+  #     fselect(KKA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_jumlah_penggunaan_kka <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_bkb_keluarga |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
+  #     fselect(KKA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   #sebelum
+  # 
+  #   result_sebelum <- data_bkb_keluarga |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
+  #     fselect(KKA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   #sebelum
+  #   
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # data_genting <- fread("data/data_genting.csv")
+  # output$genting <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_genting |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
+  #     fselect(GENTING) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_genting <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_genting |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
+  #     fselect(GENTING) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   result_sebelum <- data_genting |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
+  #     fselect(GENTING) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   #sebelum
+  #   
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # data_tamasya <- fread("data/data_tamasya.csv")
+  # output$tamasya <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_tamasya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
+  #     fselect(`PENDAMPINGAN TPA`) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_tamasya <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_tamasya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
+  #     fselect(`PENDAMPINGAN TPA`) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   #sebelum
+  #   result_sebelum <- data_tamasya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
+  #     fselect(`PENDAMPINGAN TPA`) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # # Load data untuk edukasi KBPP
+  # edukasi_kbpp_bumil <- fread("data/2025-elsimil-bumil.csv", sep = ";")
+  # edukasi_kbpp_pascasalin <- fread("data/2025-elsimil-pascasalin.csv", sep = ";")
+  # 
+  # # Reactive function untuk jumlah edukasi KBPP
+  # output$jumlah_edukasi_kbpp <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   # Filter dan aggregate data bumil
+  #   bumil_agg <- edukasi_kbpp_bumil |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Filter dan aggregate data pascasalin
+  #   pascasalin_agg <- edukasi_kbpp_pascasalin |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Join data dan hitung persentase edukasi KBPP
+  #   edukasi_kbpp <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
+  #     ftransform(
+  #       EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
+  #                          KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
+  #                          KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
+  #                         (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
+  #     ) |>
+  #     fselect(EDUKASI_KBPP) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   paste0(format(round(edukasi_kbpp, 2), decimal.mark = ","), "%")
+  # })
+  # 
+  # output$status_jumlah_edukasi_kbpp <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   # Filter dan aggregate data bumil
+  #   bumil_agg <- edukasi_kbpp_bumil |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Filter dan aggregate data pascasalin
+  #   pascasalin_agg <- edukasi_kbpp_pascasalin |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Join data dan hitung persentase edukasi KBPP
+  #   edukasi_kbpp <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
+  #     ftransform(
+  #       EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
+  #                          KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
+  #                          KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
+  #                         (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
+  #     ) |>
+  #     fselect(EDUKASI_KBPP) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   #sebelum
+  #   # Filter dan aggregate data bumil
+  #   bumil_agg <- edukasi_kbpp_bumil |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Filter dan aggregate data pascasalin
+  #   pascasalin_agg <- edukasi_kbpp_pascasalin |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
+  #       KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
+  #       KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
+  #     )
+  #   
+  #   # Join data dan hitung persentase edukasi KBPP
+  #   edukasi_kbpp_sebelum <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
+  #     ftransform(
+  #       EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
+  #                          KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
+  #                          KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
+  #                         (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
+  #     ) |>
+  #     fselect(EDUKASI_KBPP) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   selisih <- paste0(gsub("\\.", ",", format(round(edukasi_kbpp,2) - round(edukasi_kbpp_sebelum, 2), nsmall = 2)), "%")
+  #   
+  #   if (edukasi_kbpp > edukasi_kbpp_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (edukasi_kbpp < edukasi_kbpp_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  #   
+  # })
+  # 
+  # data_sidaya <- fread("data/data_sidaya.csv")
+  # # Reactive function untuk jumlah PIKR
+  # output$jumlah_sidaya_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #  filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_sidaya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
+  #     fselect(SIDAYA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_jumlah_sidaya_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_sidaya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #       BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
+  #     fselect(SIDAYA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   result_sebelum <- data_sidaya |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
+  #     fselect(SIDAYA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # # Reactive function untuk jumlah PIKR
+  # output$jumlah_pikr_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_pikr |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
+  #     fselect(JUMLAH_REMAJA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_jumlah_pikr_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_pikr |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
+  #     fselect(JUMLAH_REMAJA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   result_sebelum <- data_pikr |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
+  #     fselect(JUMLAH_REMAJA) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # data_gati <- fread("data/data_gati.csv")
+  # output$jumlah_gati_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_gati |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+  #     fselect(GATI) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_jumlah_gati_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_gati |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+  #     fselect(GATI) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   result_sebelum <- data_gati |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
+  #     fselect(GATI) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
+  #   }
+  # })
+  # 
+  # # Reactive function untuk jumlah MKJP
+  # output$jumlah_mkjp_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #     filter_kabupaten <- value_filter_kab_sipacoai()
+  #     filter_kecamatan <- value_filter_kec_sipacoai() 
+  #     filter_desa <- value_filter_desa_kel_sipacoai()
+  #     filter_bulan <- input$pilih_bulan_sipacoai
+  #     
+  #     result <- data_mix |>
   #       fsubset(
-  #         KABUPATEN %in% filter_kabupaten) |>
-  #       fsubset(KECAMATAN %in% filter_kecamatan) |>
-  #       fselect(KELURAHAN)
-  #     filter_desa_kel = daftar_kel$KELURAHAN
-  #   } else{
-  #     filter_desa_kel = input$pilih_desa_kel_sipacoai
+  #         KABUPATEN %in% filter_kabupaten &
+  #           KECAMATAN %in% filter_kecamatan &
+  #           KELURAHAN %in% filter_desa &
+  #           BULAN %in% filter_bulan
+  #       ) |>
+  #       fgroup_by(PROVINSI) |>
+  #       fsummarise(
+  #         IMPLAN = fsum(IMPLAN, na.rm = TRUE),
+  #         IUD = fsum(IUD, na.rm = TRUE),
+  #         VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
+  #         TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
+  #         KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
+  #       ) |>
+  #       ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
+  #       fselect(MKJP) |>
+  #       unlist() |>
+  #       as.numeric()
+  #   
+  #     paste0(format(result, big.mark = ".", scientific = FALSE))
+  # })
+  # 
+  # output$status_jumlah_mkjp_sipacoai <- renderText({
+  #   # Trigger reactive event berdasarkan action button
+  #   req(input$cari_sipacoai)
+  #   
+  #   filter_kabupaten <- value_filter_kab_sipacoai()
+  #   filter_kecamatan <- value_filter_kec_sipacoai() 
+  #   filter_desa <- value_filter_desa_kel_sipacoai()
+  #   filter_bulan <- input$pilih_bulan_sipacoai
+  #   
+  #   result <- data_mix |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% filter_bulan
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       IMPLAN = fsum(IMPLAN, na.rm = TRUE),
+  #       IUD = fsum(IUD, na.rm = TRUE),
+  #       VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
+  #       TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
+  #       KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
+  #     ) |>
+  #     ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
+  #     fselect(MKJP) |>
+  #     unlist() |>
+  #     as.numeric()
+  #   
+  #   result_sebelum <- data_mix |>
+  #     fsubset(
+  #       KABUPATEN %in% filter_kabupaten &
+  #         KECAMATAN %in% filter_kecamatan &
+  #         KELURAHAN %in% filter_desa &
+  #         BULAN %in% "SEPTEMBER"
+  #     ) |>
+  #     fgroup_by(PROVINSI) |>
+  #     fsummarise(
+  #       IMPLAN = fsum(IMPLAN, na.rm = TRUE),
+  #       IUD = fsum(IUD, na.rm = TRUE),
+  #       VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
+  #       TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
+  #       KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
+  #     ) |>
+  #     ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
+  #     fselect(MKJP) |>
+  #     unlist() |>
+  #     as.numeric()
+  # 
+  #   selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
+  #   
+  #   if (result > result_sebelum) {
+  #     # Nilai A lebih tinggi - tampilkan text naik
+  #     paste0("↑ NAIK ", selisih, " dari September")
+  #   } else if (result < result_sebelum) {
+  #     # Nilai A lebih rendah - tampilkan text turun  
+  #     paste0("↓ TURUN ", selisih, " dari September")
+  #   } else {
+  #     # Nilai sama - tampilkan text sama
+  #     paste0("Sama dengan Bulan September")
   #   }
-  #   value_filter_desa_kel_sipacoai(filter_desa_kel) 
   # })
-  
-  # bulan
-  # value_filter_bulan_sipacoai <- reactiveVal(0)       # rv <- reactiveValues(value = 0)
+  #   # 
   # 
-  # observeEvent(input$cari_sipacoai, {
-  #   value_filter_bulan(input$pilih_bulan_sipacoai) 
-  # })
-  
-  # Jika ingin lebih reaktif dan modular
-  value_filter_kab_sipacoai <- eventReactive(input$cari_sipacoai, {
-    if (input$jenis_wilayah == "lokus") {
-      c("MAMASA", "MAMUJU", "MAJENE", "POLEWALI MANDAR")
-    } else if (input$jenis_wilayah != "lokus" & input$pilih_kab_sipacoai == "SEMUA KABUPATEN") {
-      unique(data_nama_desa$KABUPATEN)
-    } else {
-      input$pilih_kab_sipacoai
-    }
-  })
-  
-  value_filter_kec_sipacoai <- eventReactive(input$cari_sipacoai, {
-    req(value_filter_kab_sipacoai())
-    if (input$jenis_wilayah == "lokus") {
-      c("MAMASA", "SIMBORO", "TOMMO", "MALUNDA", "SENDANA", "POLEWALI", "ANREAPI")
-    } else if (input$jenis_wilayah != "lokus" & input$pilih_kec_sipacoai == "SEMUA KECAMATAN") {
-      unique(data_nama_desa$KECAMATAN[data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai()])
-    } else {
-      input$pilih_kec_sipacoai
-    }
-  })
-  
-  value_filter_desa_kel_sipacoai <- eventReactive(input$cari_sipacoai, {
-    req(value_filter_kab_sipacoai(), value_filter_kec_sipacoai())
-    if (input$jenis_wilayah == "lokus") {
-      c("OSANGO", "RANGAS", "LELING", "LOMBONG TIMUR", "BUKIT SAMANG", "TAKATIDUNG", "KUNYI")
-    } else if (input$jenis_wilayah != "lokus" & input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL") {
-      unique(data_nama_desa$KELURAHAN[
-        data_nama_desa$KABUPATEN %in% value_filter_kab_sipacoai() & 
-          data_nama_desa$KECAMATAN %in% value_filter_kec_sipacoai()
-      ])
-    } else {
-      input$pilih_desa_kel_sipacoai
-    }
-  })
-  
-  value_filter_bulan_sipacoai <- eventReactive(input$cari_sipacoai, {
-    input$pilih_bulan_sipacoai
-  })
-  
-  
-  
-  ## batas gu filter
-  
-  ## gu judul
-  # values_sipacoai <- reactiveValues(default = 0)
-  # 
-  # observeEvent(input$cari_sipacoai,{
-  #   values_sipacoai$default <- input$cari_sipacoai
-  # })
-  
-  teks_judul_rekap_sipacoai <- eventReactive(input$cari_sipacoai, {
-    if(input$jenis_wilayah == "lokus") {
-      nama_daerah = "LOKUS"
-      tingkat_daerah = "SIPACOAI"
-    } else if(input$pilih_kab_sipacoai == "SEMUA KABUPATEN"){
-      nama_daerah = "SULAWESI BARAT"
-      tingkat_daerah = "PROVINSI"
-    } else if(input$pilih_kec_sipacoai == "SEMUA KECAMATAN"){
-      nama_daerah = input$pilih_kab_sipacoai
-      tingkat_daerah = "KABUPATEN"
-    } else if(input$pilih_desa_kel_sipacoai == "SEMUA DESA/KEL"){
-      nama_daerah = input$pilih_kec_sipacoai
-      tingkat_daerah = "KECAMATAN"
-    } else{
-      nama_daerah = value_filter_desa_kel_sipacoai()
-      tingkat_daerah = "DESA/KELURAHAN"
-    }
-    teks <- paste(tingkat_daerah, nama_daerah, "-", input$pilih_bulan_sipacoai)
-    # if(tingkat_daerah == "KELURAHAN"){
-    #   teks <- paste0("PROFIL DESA/", tingkat_daerah, " ", nama_daerah, " - ", input$bulan_rekap)
-    # } else{
-    #   teks <- paste("PROFIL", tingkat_daerah, nama_daerah, "-", input$bulan_rekap)
-    # }
-  })
-  
-  output$tes_input_rekap_sipacoai <- renderText({
-    
-    teks = teks_judul_rekap_sipacoai()
-    
-  })
-  
-  ## batas gu judul
-  data_bkb_keluarga <- fread("data/data_bkb_keluarga.csv")
-  output$jumlah_pendampingan_keluarga <- renderText({
-    # React to action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    bkb_filtered <- fsubset(data_bkb_keluarga, 
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
-    
-    
-    # --- Agregasi BKR ---
-    # Note: Assuming data_bkr exists - you'll need to load it
-    bkr_filtered <- fsubset(data_bkr,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKR data
-    # bkr_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKR = 0
-    # )
-    
-    # --- Agregasi BKL ---
-    # Note: Assuming data_bkl exists - you'll need to load it
-    bkl_filtered <- fsubset(data_bkl,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKL data
-    # bkl_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKL = 0
-    # )
-    
-    # --- Agregasi PUS ---
-    # Note: Assuming data_pus exists - you'll need to load it
-    pus_filtered <- fsubset(data_pus,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
-    
-    pa_filtered <- fsubset(data_mix,
-                           KABUPATEN %in% filter_kabupaten &
-                             KECAMATAN %in% filter_kecamatan &
-                             KELURAHAN %in% filter_desa &
-                             BULAN %in% filter_bulan)
-    
-    pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
-    
-    pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
-    
-    # Format hasil sebagai persentase
-    hasil_persen <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
-    hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
-    
-    paste0(hasil_formatted, "%")
-
-  }) 
-  
-  output$status_jumlah_pendampingan_keluarga <- renderText({
-    # React to action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    filter_bulan_sebelum <- "SEPTEMBER"
-    
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    bkb_filtered <- fsubset(data_bkb_keluarga, 
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
-    
-    
-    # --- Agregasi BKR ---
-    # Note: Assuming data_bkr exists - you'll need to load it
-    bkr_filtered <- fsubset(data_bkr,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKR data
-    # bkr_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKR = 0
-    # )
-    
-    # --- Agregasi BKL ---
-    # Note: Assuming data_bkl exists - you'll need to load it
-    bkl_filtered <- fsubset(data_bkl,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKL data
-    # bkl_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKL = 0
-    # )
-    
-    # --- Agregasi PUS ---
-    # Note: Assuming data_pus exists - you'll need to load it
-    pus_filtered <- fsubset(data_pus,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan)
-    
-    pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
-    
-    pa_filtered <- fsubset(data_mix,
-                           KABUPATEN %in% filter_kabupaten &
-                             KECAMATAN %in% filter_kecamatan &
-                             KELURAHAN %in% filter_desa &
-                             BULAN %in% filter_bulan)
-    
-    pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
-    
-    pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
-    
-    # Format hasil sebagai persentase
-    hasil_persen <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
-    #hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
-    #sebelum
-    
-    
-    #sesudah
-    # --- Agregasi BKB ---
-    # Filter and aggregate BKB data
-    bkb_filtered <- fsubset(data_bkb_keluarga, 
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan_sebelum)
-    
-    bkb_hadir <- fgroup_by(bkb_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKB = fmean(`JUMLAH KELUARGA ANGGOTA BKB HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKB`, na.rm = TRUE) * 100)
-    
-    
-    # --- Agregasi BKR ---
-    # Note: Assuming data_bkr exists - you'll need to load it
-    bkr_filtered <- fsubset(data_bkr,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan_sebelum)
-    
-    bkr_hadir <- fgroup_by(bkr_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKR = fmean(`JUMLAH KELUARGA ANGGOTA BKR HADIR PERTEMUAN` / `JUMLAH KELUARGA ANGGOTA BKR`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKR data
-    # bkr_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKR = 0
-    # )
-    
-    # --- Agregasi BKL ---
-    # Note: Assuming data_bkl exists - you'll need to load it
-    bkl_filtered <- fsubset(data_bkl,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan_sebelum)
-    
-    bkl_hadir <- fgroup_by(bkl_filtered, PROVINSI) %>%
-      fsummarise(Keluarga_Hadir_BKL = fmean(`JUMLAH ANGGOTA KELUARGA HADIR` / `JUMLAH ANGGOTA BKL`, na.rm = TRUE) * 100)
-    
-    # For demonstration, creating dummy BKL data
-    # bkl_hadir <- data.frame(
-    #   PROVINSI = unique(bkb_hadir$PROVINSI),
-    #   Keluarga_Hadir_BKL = 0
-    # )
-    
-    # --- Agregasi PUS ---
-    # Note: Assuming data_pus exists - you'll need to load it
-    pus_filtered <- fsubset(data_pus,
-                            KABUPATEN %in% filter_kabupaten &
-                              KECAMATAN %in% filter_kecamatan &
-                              KELURAHAN %in% filter_desa &
-                              BULAN %in% filter_bulan_sebelum)
-    
-    pus_total <- fgroup_by(pus_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PUS = fsum(PUS, na.rm = TRUE))
-    
-    pa_filtered <- fsubset(data_mix,
-                           KABUPATEN %in% filter_kabupaten &
-                             KECAMATAN %in% filter_kecamatan &
-                             KELURAHAN %in% filter_desa &
-                             BULAN %in% filter_bulan_sebelum)
-    
-    pa_total <- fgroup_by(pa_filtered, PROVINSI) %>%
-      fsummarise(JUMLAH_PA = fsum(PA, na.rm = TRUE))
-    
-    pa_persen <- merge(pa_total, pus_total, by = "PROVINSI", all = TRUE) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(PERSEN_PA = JUMLAH_PA / JUMLAH_PUS * 100)
-    
-    # Format hasil sebagai persentase
-    hasil_persen_sesudah <- round(mean(pa_persen$PERSEN_PA, bkb_hadir$Keluarga_Hadir_BKB, bkr_hadir$Keluarga_Hadir_BKR, bkl_hadir$Keluarga_Hadir_BKL), 2)
-    #hasil_formatted <- gsub("\\.", ",", format(hasil_persen, nsmall = 2))
-    #sesudah
-    selisih <- paste0(gsub("\\.", ",", format(hasil_persen_sesudah - hasil_persen, nsmall = 2)), "%")
-    
-    if (hasil_persen > hasil_persen_sesudah) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, "dari September")
-    } else if (hasil_persen < hasil_persen_sesudah) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-    
-    #paste0(hasil_persen_sesudah, "%")
-    
-  }) 
-  
-  data_ds <- fread("data/data_ds.csv")
-  output$ds <- renderText({
-    # React to action button
-    req(input$cari_sipacoai)
-    
-    # Wrap dalam tryCatch untuk handle error
-    tryCatch({
-      filter_kabupaten <- value_filter_kab_sipacoai()
-      filter_kecamatan <- value_filter_kec_sipacoai() 
-      filter_desa <- value_filter_desa_kel_sipacoai()
-      filter_bulan <- input$pilih_bulan_sipacoai
-      
-      # --- Agregasi BKB ---
-      # Filter and aggregate BKB data
-      data_ds <- fsubset(data_ds, 
-                         KABUPATEN %in% filter_kabupaten &
-                           KECAMATAN %in% filter_kecamatan &
-                           KELURAHAN %in% filter_desa &
-                           BULAN %in% filter_bulan)
-      
-      data_ds <- fgroup_by(data_ds, PROVINSI) %>%
-        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-      
-      # Handle NaN, NA, atau Inf - ubah jadi 0
-      if(nrow(data_ds) == 0 || is.na(data_ds$DS) || is.nan(data_ds$DS) || is.infinite(data_ds$DS)) {
-        hasil_formatted <- "0,00"
-      } else {
-        hasil_formatted <- gsub("\\.", ",", format(round(data_ds$DS, 2), nsmall = 2))
-      }
-      
-      paste0(hasil_formatted, "%")
-      
-    }, error = function(e) {
-      # Jika terjadi error, return 0%
-      return("0,00%")
-    })
-  })
-  
-  output$status_ds <- renderText({
-    # React to action button
-    req(input$cari_sipacoai)
-    
-    # Wrap dalam tryCatch untuk handle error
-    tryCatch({
-      filter_kabupaten <- value_filter_kab_sipacoai()
-      filter_kecamatan <- value_filter_kec_sipacoai() 
-      filter_desa <- value_filter_desa_kel_sipacoai()
-      filter_bulan <- input$pilih_bulan_sipacoai
-      
-      # --- Agregasi data sebelum ---
-      data_ds_sebelum <- fsubset(data_ds, 
-                                 KABUPATEN %in% filter_kabupaten &
-                                   KECAMATAN %in% filter_kecamatan &
-                                   KELURAHAN %in% filter_desa &
-                                   BULAN %in% "SEPTEMBER")
-      
-      data_ds_sebelum <- fgroup_by(data_ds_sebelum, PROVINSI) %>%
-        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-      
-      # --- Agregasi data current ---
-      data_ds_current <- fsubset(data_ds, 
-                                 KABUPATEN %in% filter_kabupaten &
-                                   KECAMATAN %in% filter_kecamatan &
-                                   KELURAHAN %in% filter_desa &
-                                   BULAN %in% filter_bulan)
-      
-      data_ds_current <- fgroup_by(data_ds_current, PROVINSI) %>%
-        fsummarise(DS = fmean(`JUMLAH DITIMBANG` / `JUMLAH SASARAN`, na.rm = TRUE) * 100)
-      
-      # Handle NaN, NA, atau Inf untuk kedua dataset
-      if(nrow(data_ds_sebelum) == 0 || is.na(data_ds_sebelum$DS) || is.nan(data_ds_sebelum$DS) || is.infinite(data_ds_sebelum$DS)) {
-        data_ds_sebelum$DS <- 0
-      }
-      
-      if(nrow(data_ds_current) == 0 || is.na(data_ds_current$DS) || is.nan(data_ds_current$DS) || is.infinite(data_ds_current$DS)) {
-        data_ds_current$DS <- 0
-      }
-      
-      # Hitung selisih
-      selisih_value <- data_ds_current$DS - data_ds_sebelum$DS
-      
-      # Handle NaN/NA pada selisih
-      if(is.na(selisih_value) || is.nan(selisih_value) || is.infinite(selisih_value)) {
-        selisih_value <- 0
-      }
-      
-      selisih <- gsub("\\.", ",", format(round(selisih_value, 2), nsmall = 2))
-      
-      # Tentukan status berdasarkan perbandingan
-      if (data_ds_current$DS > data_ds_sebelum$DS) {
-        paste0("↑ NAIK ", selisih, "% dari September")
-      } else if (data_ds_current$DS < data_ds_sebelum$DS) {
-        paste0("↓ TURUN ", abs(as.numeric(gsub(",", ".", selisih))), "% dari September")
-      } else {
-        "Sama dengan Bulan September"
-      }
-      
-    }, error = function(e) {
-      # Jika terjadi error, return status default
-      return("Data tidak tersedia")
-    })
-  })
-  
-  # Reactive function untuk jumlah penggunaan KKA
-  output$jumlah_penggunaan_kka <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_bkb_keluarga |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
-      fselect(KKA) |>
-      unlist() |>
-      as.numeric()
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_jumlah_penggunaan_kka <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_bkb_keluarga |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
-      fselect(KKA) |>
-      unlist() |>
-      as.numeric()
-    
-    #sebelum
-
-    result_sebelum <- data_bkb_keluarga |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(KKA = fsum(KKA, na.rm = TRUE)) |>
-      fselect(KKA) |>
-      unlist() |>
-      as.numeric()
-    #sebelum
-    
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  data_genting <- fread("data/data_genting.csv")
-  output$genting <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_genting |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
-      fselect(GENTING) |>
-      unlist() |>
-      as.numeric()
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_genting <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_genting |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
-      fselect(GENTING) |>
-      unlist() |>
-      as.numeric()
-    
-    result_sebelum <- data_genting |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GENTING = fsum(GENTING, na.rm = TRUE)) |>
-      fselect(GENTING) |>
-      unlist() |>
-      as.numeric()
-    
-    #sebelum
-    
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  data_tamasya <- fread("data/data_tamasya.csv")
-  output$tamasya <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_tamasya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
-      fselect(`PENDAMPINGAN TPA`) |>
-      unlist() |>
-      as.numeric()
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_tamasya <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_tamasya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
-      fselect(`PENDAMPINGAN TPA`) |>
-      unlist() |>
-      as.numeric()
-    
-    #sebelum
-    result_sebelum <- data_tamasya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(`PENDAMPINGAN TPA` = fsum(`PENDAMPINGAN TPA`, na.rm = TRUE)) |>
-      fselect(`PENDAMPINGAN TPA`) |>
-      unlist() |>
-      as.numeric()
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  # Load data untuk edukasi KBPP
-  edukasi_kbpp_bumil <- fread("data/2025-elsimil-bumil.csv", sep = ";")
-  edukasi_kbpp_pascasalin <- fread("data/2025-elsimil-pascasalin.csv", sep = ";")
-  
-  # Reactive function untuk jumlah edukasi KBPP
-  output$jumlah_edukasi_kbpp <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    # Filter dan aggregate data bumil
-    bumil_agg <- edukasi_kbpp_bumil |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
-        KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Filter dan aggregate data pascasalin
-    pascasalin_agg <- edukasi_kbpp_pascasalin |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
-        KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Join data dan hitung persentase edukasi KBPP
-    edukasi_kbpp <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
-      ftransform(
-        EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
-                           KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
-                           KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
-                          (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
-      ) |>
-      fselect(EDUKASI_KBPP) |>
-      unlist() |>
-      as.numeric()
-    
-    paste0(format(round(edukasi_kbpp, 2), decimal.mark = ","), "%")
-  })
-  
-  output$status_jumlah_edukasi_kbpp <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    # Filter dan aggregate data bumil
-    bumil_agg <- edukasi_kbpp_bumil |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
-        KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Filter dan aggregate data pascasalin
-    pascasalin_agg <- edukasi_kbpp_pascasalin |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
-        KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Join data dan hitung persentase edukasi KBPP
-    edukasi_kbpp <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
-      ftransform(
-        EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
-                           KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
-                           KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
-                          (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
-      ) |>
-      fselect(EDUKASI_KBPP) |>
-      unlist() |>
-      as.numeric()
-    
-    #sebelum
-    # Filter dan aggregate data bumil
-    bumil_agg <- edukasi_kbpp_bumil |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_BUMIL = fsum(`JUMLAH BUMIL`, na.rm = TRUE),
-        KIE_PERSEORANGAN_BUMIL = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_BUMIL = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Filter dan aggregate data pascasalin
-    pascasalin_agg <- edukasi_kbpp_pascasalin |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        JUMLAH_PASCASALIN = fsum(`JUMLAH PASCASALIN`, na.rm = TRUE),
-        KIE_PERSEORANGAN_PASCASALIN = fsum(`KIE PERSEORANGAN`, na.rm = TRUE),
-        KIE_KELOMPOK_PASCASALIN = fsum(`KIE KELOMPOK`, na.rm = TRUE),
-        KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN = fsum(`KIE PERSEORANGAN DAN KELOMPOK`, na.rm = TRUE)
-      )
-    
-    # Join data dan hitung persentase edukasi KBPP
-    edukasi_kbpp_sebelum <- join(bumil_agg, pascasalin_agg, on = "PROVINSI", how = "left") |>
-      ftransform(
-        EDUKASI_KBPP = ((KIE_PERSEORANGAN_BUMIL + KIE_PERSEORANGAN_PASCASALIN + 
-                           KIE_KELOMPOK_BUMIL + KIE_KELOMPOK_PASCASALIN + 
-                           KIE_PERSEORANGAN_DAN_KELOMPOK_BUMIL + KIE_PERSEORANGAN_DAN_KELOMPOK_PASCASALIN) / 
-                          (JUMLAH_BUMIL + JUMLAH_PASCASALIN)) * 100
-      ) |>
-      fselect(EDUKASI_KBPP) |>
-      unlist() |>
-      as.numeric()
-    
-    selisih <- paste0(gsub("\\.", ",", format(round(edukasi_kbpp,2) - round(edukasi_kbpp_sebelum, 2), nsmall = 2)), "%")
-    
-    if (edukasi_kbpp > edukasi_kbpp_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (edukasi_kbpp < edukasi_kbpp_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-    
-  })
-  
-  data_sidaya <- fread("data/data_sidaya.csv")
-  # Reactive function untuk jumlah PIKR
-  output$jumlah_sidaya_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-   filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_sidaya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
-      fselect(SIDAYA) |>
-      unlist() |>
-      as.numeric()
-    
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_jumlah_sidaya_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_sidaya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-        BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
-      fselect(SIDAYA) |>
-      unlist() |>
-      as.numeric()
-    
-    result_sebelum <- data_sidaya |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(SIDAYA = fsum(SIDAYA, na.rm = TRUE)) |>
-      fselect(SIDAYA) |>
-      unlist() |>
-      as.numeric()
-    
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  # Reactive function untuk jumlah PIKR
-  output$jumlah_pikr_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_pikr |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
-      fselect(JUMLAH_REMAJA) |>
-      unlist() |>
-      as.numeric()
-    
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_jumlah_pikr_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_pikr |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
-      fselect(JUMLAH_REMAJA) |>
-      unlist() |>
-      as.numeric()
-    
-    result_sebelum <- data_pikr |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(JUMLAH_REMAJA = fsum(`JUMLAH REMAJA HADIR DALAM PERTEMUAN`, na.rm = TRUE)) |>
-      fselect(JUMLAH_REMAJA) |>
-      unlist() |>
-      as.numeric()
-    
-    
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  data_gati <- fread("data/data_gati.csv")
-  output$jumlah_gati_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_gati |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
-      fselect(GATI) |>
-      unlist() |>
-      as.numeric()
-    
-    paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_jumlah_gati_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_gati |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
-      fselect(GATI) |>
-      unlist() |>
-      as.numeric()
-    
-    result_sebelum <- data_gati |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(GATI = fsum(`GATI DEKAT`, na.rm = TRUE)) |>
-      fselect(GATI) |>
-      unlist() |>
-      as.numeric()
-    
-    
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
-  # Reactive function untuk jumlah MKJP
-  output$jumlah_mkjp_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-      filter_kabupaten <- value_filter_kab_sipacoai()
-      filter_kecamatan <- value_filter_kec_sipacoai() 
-      filter_desa <- value_filter_desa_kel_sipacoai()
-      filter_bulan <- input$pilih_bulan_sipacoai
-      
-      result <- data_mix |>
-        fsubset(
-          KABUPATEN %in% filter_kabupaten &
-            KECAMATAN %in% filter_kecamatan &
-            KELURAHAN %in% filter_desa &
-            BULAN %in% filter_bulan
-        ) |>
-        fgroup_by(PROVINSI) |>
-        fsummarise(
-          IMPLAN = fsum(IMPLAN, na.rm = TRUE),
-          IUD = fsum(IUD, na.rm = TRUE),
-          VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
-          TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
-          KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
-        ) |>
-        ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
-        fselect(MKJP) |>
-        unlist() |>
-        as.numeric()
-    
-      paste0(format(result, big.mark = ".", scientific = FALSE))
-  })
-  
-  output$status_jumlah_mkjp_sipacoai <- renderText({
-    # Trigger reactive event berdasarkan action button
-    req(input$cari_sipacoai)
-    
-    filter_kabupaten <- value_filter_kab_sipacoai()
-    filter_kecamatan <- value_filter_kec_sipacoai() 
-    filter_desa <- value_filter_desa_kel_sipacoai()
-    filter_bulan <- input$pilih_bulan_sipacoai
-    
-    result <- data_mix |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% filter_bulan
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        IMPLAN = fsum(IMPLAN, na.rm = TRUE),
-        IUD = fsum(IUD, na.rm = TRUE),
-        VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
-        TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
-        KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
-      ) |>
-      ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
-      fselect(MKJP) |>
-      unlist() |>
-      as.numeric()
-    
-    result_sebelum <- data_mix |>
-      fsubset(
-        KABUPATEN %in% filter_kabupaten &
-          KECAMATAN %in% filter_kecamatan &
-          KELURAHAN %in% filter_desa &
-          BULAN %in% "SEPTEMBER"
-      ) |>
-      fgroup_by(PROVINSI) |>
-      fsummarise(
-        IMPLAN = fsum(IMPLAN, na.rm = TRUE),
-        IUD = fsum(IUD, na.rm = TRUE),
-        VASEKTOMI = fsum(VASEKTOMI, na.rm = TRUE),
-        TUBEKTOMI = fsum(TUBEKTOMI, na.rm = TRUE),
-        KB_MODERN = fsum(`KB MODERN`, na.rm = TRUE)
-      ) |>
-      ftransform(MKJP = IUD + IMPLAN + VASEKTOMI + TUBEKTOMI) |>
-      fselect(MKJP) |>
-      unlist() |>
-      as.numeric()
-
-    selisih <- paste0(format(result - result_sebelum, big.mark = ".", scientific = FALSE))
-    
-    if (result > result_sebelum) {
-      # Nilai A lebih tinggi - tampilkan text naik
-      paste0("↑ NAIK ", selisih, " dari September")
-    } else if (result < result_sebelum) {
-      # Nilai A lebih rendah - tampilkan text turun  
-      paste0("↓ TURUN ", selisih, " dari September")
-    } else {
-      # Nilai sama - tampilkan text sama
-      paste0("Sama dengan Bulan September")
-    }
-  })
-  
+  # #SIPACOAI
   # Reactive function untuk peringkat kesejahteraan
   output$peringkat_kesejahteraan <- renderEcharts4r({
     # Trigger reactive event berdasarkan action button
     req(input$cari)
 
     filter_kabupaten <- value_filter_kab()
-    filter_kecamatan <- value_filter_kec() 
+    filter_kecamatan <- value_filter_kec()
     filter_desa <- value_filter_desa_kel()
-    
+
     # Filter dan aggregate data
     data_kesejahteraan <- data_krs_verval |>
       fsubset(
@@ -3558,11 +3560,11 @@ server <- function(input, output, session) {
         `KESEJAHTERAAN 4` = fsum(`KESEJAHTERAAN 4`, na.rm = TRUE),
         `KESEJAHTERAAN > 4` = fsum(`KESEJAHTERAAN > 4`, na.rm = TRUE)
       )
-    
+
     # Reshape data dari wide ke long format menggunakan base R
-    kesejahteraan_cols <- c("KESEJAHTERAAN 1", "KESEJAHTERAAN 2", "KESEJAHTERAAN 3", 
+    kesejahteraan_cols <- c("KESEJAHTERAAN 1", "KESEJAHTERAAN 2", "KESEJAHTERAAN 3",
                             "KESEJAHTERAAN 4", "KESEJAHTERAAN > 4")
-    
+
     # Manual reshape ke long format
     data_long <- data.frame(
       PROVINSI = rep(data_kesejahteraan$PROVINSI, length(kesejahteraan_cols)),
@@ -3573,26 +3575,26 @@ server <- function(input, output, session) {
                  data_kesejahteraan$`KESEJAHTERAAN 4`,
                  data_kesejahteraan$`KESEJAHTERAAN > 4`)
     )
-    
+
     # Custom order untuk tingkat kesejahteraan
-    custom_order <- c("KESEJAHTERAAN 1", "KESEJAHTERAAN 2", "KESEJAHTERAAN 3", 
+    custom_order <- c("KESEJAHTERAAN 1", "KESEJAHTERAAN 2", "KESEJAHTERAAN 3",
                       "KESEJAHTERAAN 4", "KESEJAHTERAAN > 4")
-    
+
     # Hitung total jumlah
     total_jumlah <- sum(data_long$JUMLAH, na.rm = TRUE)
-    
+
     # Tambahkan kolom persentase dan formatting
     data_long$PERSENTASE <- round((data_long$JUMLAH / total_jumlah) * 100, 2)
     data_long$JUMLAH_FORMATTED <- format(data_long$JUMLAH, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     data_long$PERSENTASE_FORMAT <- paste0(format(data_long$PERSENTASE, decimal.mark = ","), "%")
     data_long$TINGKAT_KESEJAHTERAAN <- factor(data_long$TINGKAT_KESEJAHTERAAN, levels = custom_order)
-    
+
     # Order data sesuai factor levels
     data_long <- data_long[order(data_long$TINGKAT_KESEJAHTERAAN), ]
-    
+
     # Warna untuk setiap tingkat kesejahteraan
     colors <- c("#FF4500", "#FFA500", "#FFD700", "#3CB371", "#2E8B57")
-    
+
     # Buat chart dengan echarts4r
     chart <- data_long |>
       e_charts(TINGKAT_KESEJAHTERAAN) |>
@@ -3626,20 +3628,20 @@ server <- function(input, output, session) {
         show = TRUE,
         position = "right"
       )
-    
+
     chart
   })
-  
+
   # Reactive function untuk faktor KRS
   output$faktor_krs <- renderEcharts4r({
     # Trigger reactive event berdasarkan action button
     req(input$cari)
-    
+
     isolate({
       filter_kabupaten <- value_filter_kab()
-      filter_kecamatan <- value_filter_kec() 
+      filter_kecamatan <- value_filter_kec()
       filter_desa <- value_filter_desa_kel()
-      
+
       # Filter dan aggregate data
       faktor_krs <- data_krs_verval |>
         fsubset(
@@ -3657,11 +3659,11 @@ server <- function(input, output, session) {
           `TERLALU BANYAK` = fsum(`TERLALU BANYAK`, na.rm = TRUE),
           `BUKAN PESERTA KB MODERN` = fsum(`BUKAN PESERTA KB MODERN`, na.rm = TRUE)
         )
-      
+
       # Reshape data dari wide ke long format menggunakan base R
-      faktor_cols <- c("SUMBER AIR MINUM TIDAK LAYAK", "JAMBAN TIDAK LAYAK", "TERLALU MUDA", 
+      faktor_cols <- c("SUMBER AIR MINUM TIDAK LAYAK", "JAMBAN TIDAK LAYAK", "TERLALU MUDA",
                        "TERLALU TUA", "TERLALU DEKAT", "TERLALU BANYAK", "BUKAN PESERTA KB MODERN")
-      
+
       # Manual reshape ke long format
       data_long <- data.frame(
         PROVINSI = rep(faktor_krs$PROVINSI, length(faktor_cols)),
@@ -3674,19 +3676,19 @@ server <- function(input, output, session) {
                    faktor_krs$`TERLALU BANYAK`,
                    faktor_krs$`BUKAN PESERTA KB MODERN`)
       )
-      
+
       # Format angka dengan pemisah titik
       data_long$JUMLAH_FORMATTED <- format(data_long$JUMLAH, big.mark = ".", decimal.mark = ",", scientific = FALSE)
-      
+
       # Urutkan data berdasarkan jumlah (terbesar ke terkecil)
       data_long <- data_long[order(data_long$JUMLAH), ]
-      
+
       # Buat urutan factor berdasarkan jumlah
       data_long$FAKTOR_KRS <- factor(data_long$FAKTOR_KRS, levels = unique(data_long$FAKTOR_KRS))
-      
+
       # Warna biru (sesuaikan dengan warna_biru dari Python)
       warna_biru <- "#1f77b4"  # Default blue color, sesuaikan jika perlu
-      
+
       # Buat chart dengan echarts4r
       chart <- data_long |>
         e_charts(FAKTOR_KRS) |>
@@ -3727,32 +3729,32 @@ server <- function(input, output, session) {
           position = "right"
         ) |>
         e_theme("default")
-      
+
       return(chart)
     })
   })
-  
+
   # Reactive function untuk pie chart punya baduta
   output$pie_punya_baduta <- renderEcharts4r({
     # Trigger reactive event berdasarkan action button
     req(input$cari)
-    
+
     isolate({
       filter_kabupaten <- value_filter_kab()
-      filter_kecamatan <- value_filter_kec() 
+      filter_kecamatan <- value_filter_kec()
       filter_desa <- value_filter_desa_kel()
-      
+
       # Conditional logic berdasarkan pilihan filter
       if (is.null(input$pilih_kab) || input$pilih_kab == "SEMUA KABUPATEN") {
         data_kel_baduta <- data_krs_verval |>
           fgroup_by(KABUPATEN) |>
           fsummarise(PUNYA_BADUTA = fsum(`PUNYA BADUTA`, na.rm = TRUE)) |>
           frename(KABUPATEN = "KATEGORI")
-        
+
         subtitle_pie <- "Berdasarkan Kabupaten"
         atur_radius <- 100
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
                  (is.null(input$pilih_kec) || input$pilih_kec == "SEMUA KECAMATAN")) {
         data_kel_baduta <- data_krs_verval |>
           ftransform(
@@ -3760,12 +3762,12 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BADUTA = fsum(`PUNYA BADUTA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kab, "dan Kabupaten Lainnya")
         atur_radius <- 150
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
-                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
+                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" &&
                  (is.null(input$pilih_desa) || input$pilih_desa == "SEMUA DESA/KELURAHAN")) {
         data_kel_baduta <- data_krs_verval |>
           fsubset(KABUPATEN %in% filter_kabupaten) |>
@@ -3775,10 +3777,10 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BADUTA = fsum(`PUNYA BADUTA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kec, "dan Kec Lainnya di Kab.", input$pilih_kab)
         atur_radius <- 150
-        
+
       } else {
         data_kel_baduta <- data_krs_verval |>
           fsubset(
@@ -3791,35 +3793,35 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BADUTA = fsum(`PUNYA BADUTA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_desa, "dan Desa/Kelurahan Lainnya di Kec.", input$pilih_kec)
         atur_radius <- 150
       }
-      
-      
+
+
       # Hitung persentase
       total_baduta <- sum(data_kel_baduta$PUNYA_BADUTA, na.rm = TRUE)
       data_kel_baduta$PERSENTASE <- round((data_kel_baduta$PUNYA_BADUTA / total_baduta) * 100, 2)
-      
+
       # Format persentase dan angka
       data_kel_baduta$PERSENTASE_FORMAT <- paste0(format(data_kel_baduta$PERSENTASE, decimal.mark = ","), "%")
       data_kel_baduta$PUNYA_BADUTA_FORMATTED <- format(data_kel_baduta$PUNYA_BADUTA, big.mark = ".", decimal.mark = ",", scientific = FALSE)
-      
+
       # Buat label gabungan
       data_kel_baduta$LABEL <- paste(data_kel_baduta$KATEGORI, data_kel_baduta$PERSENTASE_FORMAT, sep = "\n")
-      
+
       # Urutkan berdasarkan persentase
       data_kel_baduta <- data_kel_baduta[order(data_kel_baduta$PERSENTASE), ]
-      
+
       # Definisi warna (sesuaikan dengan warna_biru dan warna_kuning dari Python)
-      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", 
+      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
                   "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf")
-      
+
       # Buat pie chart dengan echarts4r
       chart <- data_kel_baduta |>
         e_charts(KATEGORI) |>
         e_pie(
-          PUNYA_BADUTA, 
+          PUNYA_BADUTA,
           name = "Jumlah",
           radius = c("0%", "70%"),
           center = c("50%", "50%"),
@@ -3857,32 +3859,32 @@ server <- function(input, output, session) {
           show = FALSE
         ) |>
         e_theme("default")
-      
+
       return(chart)
     })
   })
-  
+
   # Reactive function untuk pie chart punya balita
   output$pie_punya_balita <- renderEcharts4r({
     # Trigger reactive event berdasarkan action button
     req(input$cari)
-    
+
     isolate({
       filter_kabupaten <- value_filter_kab()
-      filter_kecamatan <- value_filter_kec() 
+      filter_kecamatan <- value_filter_kec()
       filter_desa <- value_filter_desa_kel()
-      
+
       # Conditional logic berdasarkan pilihan filter
       if (is.null(input$pilih_kab) || input$pilih_kab == "SEMUA KABUPATEN") {
         data_kel_balita <- data_krs_verval |>
           fgroup_by(KABUPATEN) |>
           fsummarise(PUNYA_BALITA = fsum(`PUNYA BALITA`, na.rm = TRUE)) |>
           frename(KABUPATEN = "KATEGORI")
-        
+
         subtitle_pie <- "Berdasarkan Kabupaten"
         atur_radius <- 100
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
                  (is.null(input$pilih_kec) || input$pilih_kec == "SEMUA KECAMATAN")) {
         data_kel_balita <- data_krs_verval |>
           ftransform(
@@ -3890,12 +3892,12 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BALITA = fsum(`PUNYA BALITA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kab, "dan Kabupaten Lainnya")
         atur_radius <- 150
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
-                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
+                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" &&
                  (is.null(input$pilih_desa) || input$pilih_desa == "SEMUA DESA/KELURAHAN")) {
         data_kel_balita <- data_krs_verval |>
           fsubset(KABUPATEN %in% filter_kabupaten) |>
@@ -3905,10 +3907,10 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BALITA = fsum(`PUNYA BALITA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kec, "dan Kec Lainnya di Kab.", input$pilih_kab)
         atur_radius <- 150
-        
+
       } else {
         data_kel_balita <- data_krs_verval |>
           fsubset(
@@ -3921,35 +3923,35 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUNYA_BALITA = fsum(`PUNYA BALITA`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_desa, "dan Desa/Kelurahan Lainnya di Kec.", input$pilih_kec)
         atur_radius <- 150
       }
-      
-      
+
+
       # Hitung persentase
       total_balita <- sum(data_kel_balita$PUNYA_BALITA, na.rm = TRUE)
       data_kel_balita$PERSENTASE <- round((data_kel_balita$PUNYA_BALITA / total_balita) * 100, 2)
-      
+
       # Format persentase dan angka
       data_kel_balita$PERSENTASE_FORMAT <- paste0(format(data_kel_balita$PERSENTASE, decimal.mark = ","), "%")
       data_kel_balita$PUNYA_BALITA_FORMATTED <- format(data_kel_balita$PUNYA_BALITA, big.mark = ".", decimal.mark = ",", scientific = FALSE)
-      
+
       # Buat label gabungan
       data_kel_balita$LABEL <- paste(data_kel_balita$KATEGORI, data_kel_balita$PERSENTASE_FORMAT, sep = "\n")
-      
+
       # Urutkan berdasarkan persentase
       data_kel_balita <- data_kel_balita[order(data_kel_balita$PERSENTASE), ]
-      
+
       # Definisi warna (sesuaikan dengan warna_biru dan warna_kuning dari Python)
-      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", 
+      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
                   "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf")
-      
+
       # Buat pie chart dengan echarts4r
       chart <- data_kel_balita |>
         e_charts(KATEGORI) |>
         e_pie(
-          PUNYA_BALITA, 
+          PUNYA_BALITA,
           name = "Jumlah",
           radius = c("0%", "70%"),
           center = c("50%", "50%"),
@@ -3987,33 +3989,33 @@ server <- function(input, output, session) {
           show = FALSE
         ) |>
         e_theme("default")
-      
+
       return(chart)
     })
   })
-  
+
   #hamil
   # Reactive function untuk pie chart punya balita
   output$pie_pus_hamil <- renderEcharts4r({
     # Trigger reactive event berdasarkan action button
     req(input$cari)
-    
+
     isolate({
       filter_kabupaten <- value_filter_kab()
-      filter_kecamatan <- value_filter_kec() 
+      filter_kecamatan <- value_filter_kec()
       filter_desa <- value_filter_desa_kel()
-      
+
       # Conditional logic berdasarkan pilihan filter
       if (is.null(input$pilih_kab) || input$pilih_kab == "SEMUA KABUPATEN") {
         data_kel_balita <- data_krs_verval |>
           fgroup_by(KABUPATEN) |>
           fsummarise(PUS_HAMIL = fsum(`PUS HAMIL`, na.rm = TRUE)) |>
           frename(KABUPATEN = "KATEGORI")
-        
+
         subtitle_pie <- "Berdasarkan Kabupaten"
         atur_radius <- 100
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
                  (is.null(input$pilih_kec) || input$pilih_kec == "SEMUA KECAMATAN")) {
         data_kel_balita <- data_krs_verval |>
           ftransform(
@@ -4021,12 +4023,12 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUS_HAMIL = fsum(`PUS HAMIL`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kab, "dan Kabupaten Lainnya")
         atur_radius <- 150
-        
-      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" && 
-                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" && 
+
+      } else if (!is.null(input$pilih_kab) && input$pilih_kab != "SEMUA KABUPATEN" &&
+                 !is.null(input$pilih_kec) && input$pilih_kec != "SEMUA KECAMATAN" &&
                  (is.null(input$pilih_desa) || input$pilih_desa == "SEMUA DESA/KELURAHAN")) {
         data_kel_balita <- data_krs_verval |>
           fsubset(KABUPATEN %in% filter_kabupaten) |>
@@ -4036,10 +4038,10 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUS_HAMIL = fsum(`PUS HAMIL`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_kec, "dan Kec Lainnya di Kab.", input$pilih_kab)
         atur_radius <- 150
-        
+
       } else {
         data_kel_balita <- data_krs_verval |>
           fsubset(
@@ -4052,35 +4054,35 @@ server <- function(input, output, session) {
           ) |>
           fgroup_by(KATEGORI) |>
           fsummarise(PUS_HAMIL = fsum(`PUS HAMIL`, na.rm = TRUE))
-        
+
         subtitle_pie <- paste(input$pilih_desa, "dan Desa/Kelurahan Lainnya di Kec.", input$pilih_kec)
         atur_radius <- 150
       }
-      
-      
+
+
       # Hitung persentase
       total_balita <- sum(data_kel_balita$PUS_HAMIL, na.rm = TRUE)
       data_kel_balita$PERSENTASE <- round((data_kel_balita$PUS_HAMIL / total_balita) * 100, 2)
-      
+
       # Format persentase dan angka
       data_kel_balita$PERSENTASE_FORMAT <- paste0(format(data_kel_balita$PERSENTASE, decimal.mark = ","), "%")
       data_kel_balita$PUS_HAMIL_FORMATTED <- format(data_kel_balita$PUS_HAMIL, big.mark = ".", decimal.mark = ",", scientific = FALSE)
-      
+
       # Buat label gabungan
       data_kel_balita$LABEL <- paste(data_kel_balita$KATEGORI, data_kel_balita$PERSENTASE_FORMAT, sep = "\n")
-      
+
       # Urutkan berdasarkan persentase
       data_kel_balita <- data_kel_balita[order(data_kel_balita$PERSENTASE), ]
-      
+
       # Definisi warna (sesuaikan dengan warna_biru dan warna_kuning dari Python)
-      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", 
+      colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
                   "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf")
-      
+
       # Buat pie chart dengan echarts4r
       chart <- data_kel_balita |>
         e_charts(KATEGORI) |>
         e_pie(
-          PUS_HAMIL, 
+          PUS_HAMIL,
           name = "Jumlah",
           radius = c("0%", "70%"),
           center = c("50%", "50%"),
@@ -4118,13 +4120,11 @@ server <- function(input, output, session) {
           show = FALSE
         ) |>
         e_theme("default")
-      
+
       return(chart)
     })
   })
-  
 
-  #SIPACOAI
 
 }
 
